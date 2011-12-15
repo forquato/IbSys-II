@@ -21,9 +21,10 @@ import javax.xml.bind.Unmarshaller;
 public class XMLBean {
     
     /**
+     * Marshals an Object to XML
      * 
      * @param object
-     * @return
+     * @return Filled (XML)StringWriter
      */
     public static StringWriter marshal(Object object) {
         StringWriter stringWriter = new StringWriter();
@@ -40,9 +41,10 @@ public class XMLBean {
     }
     
     /**
+     * Unmarshals the (XML)byteArray to an ResultDTO-Object
      * 
      * @param byteArray
-     * @return
+     * @return Filled ResultDTO-Object with period information
      */
     public static ResultDTO unmarshal(byte[] byteArray) {
         ResultDTO resultDTO = new ResultDTO();

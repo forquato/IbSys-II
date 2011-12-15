@@ -28,6 +28,7 @@ public class CalculateBean {
     
     
     /**
+     * Constructor gets information from resultDTO parameter and calls all necessary methods
      * 
      * @param resultDTO
      */

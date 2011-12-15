@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
- *
+ * 
  * @author p0004
  */
 @Named
@@ -16,26 +16,14 @@ public class LanguageBean implements Serializable{
     
     private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
     
-    /**
-     * 
-     * @return
-     */
     public Locale getLocale() {
         return locale;
     }
     
-    /**
-     * 
-     * @return
-     */
     public String getLanguage() {
         return locale.getLanguage();
     }
     
-    /**
-     * 
-     * @param language
-     */
     public void setLanguage(String language) {
         locale = new Locale(language);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
