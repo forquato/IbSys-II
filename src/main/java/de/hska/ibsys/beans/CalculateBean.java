@@ -236,7 +236,7 @@ public class CalculateBean {
     private void setProductionlist() {
         // Sort planned stock of P1, P2 and P3
         planPStockAtEndOfPeriod();
-        int[][] priority = new int[][]{{1,resultDTO.getSalesOrdersP1().intValue()},{2,resultDTO.getSalesOrdersP2().intValue()},{3,resultDTO.getSalesOrdersP3().intValue()}};
+        int[][] priority = new int[][]{{1,(int)plannedStockP1},{2,(int)plannedStockP2},{3,(int)plannedStockP3}};
         sortStockList(priority);
         
         Productionlist productionlist = new Productionlist();
