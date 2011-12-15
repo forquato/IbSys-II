@@ -53,6 +53,7 @@ public class XMLBean {
             resultDTO.setResult((Results)um.unmarshal( new InputStreamReader(bais) ));
         } catch (JAXBException ex) {
             Logger.getLogger(XMLBean.class.getName()).log(Level.SEVERE, null, ex);
+            resultDTO = null;
         }
         return resultDTO;
     }

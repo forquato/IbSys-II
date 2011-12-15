@@ -21,6 +21,14 @@
     <welcome-file-list>
         <welcome-file>index.htm</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.htm</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.htm</location>
+    </error-page>
     
     <filter>
         <filter-name>MyFacesExtensionsFilter</filter-name>
