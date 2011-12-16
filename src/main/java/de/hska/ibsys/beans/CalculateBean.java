@@ -235,12 +235,9 @@ public class CalculateBean {
     }
     
     private void setProductionlist() {
-        // Sort planned stock of P1, P2 and P3
-        planPStockAtEndOfPeriod();
-        int[][] priority = new int[][]{{1,(int)plannedStockP1},{2,(int)plannedStockP2},{3,(int)plannedStockP3}};
-        sortStockList(priority);
         
         Productionlist productionlist = new Productionlist();
+        planPStockAtEndOfPeriod();
         
         // Calculate P1, P2, P3 waitingorders and next production orders for placement and further operations
         int[][] E1_E2_E3 = new int[3][2];
@@ -256,6 +253,11 @@ public class CalculateBean {
         int nextProdOrdersP3 = planNextProductionOrders(resultDTO.getSalesOrdersP3(),0, (int)plannedStockP3, 3, waitingOrdersP3);
         E1_E2_E3[2][0] = 3;
         E1_E2_E3[2][1] = nextProdOrdersP3;
+        
+        // Sort planned stock of P1, P2 and P3
+        int[][] priority = new int[][]{{1,(int)nextProdOrdersP1},{2,(int)nextProdOrdersP2},{3,(int)nextProdOrdersP3}};
+        sortStockList(priority);
+        
         // POSITION 1, 2, 3
         setPositions(productionlist, E1_E2_E3, priority);
         
@@ -282,6 +284,7 @@ public class CalculateBean {
         int nextProdOrdersE26 = planNextProductionOrders(nextProdOrdersP1, waitingOrdersP1, (int)plannedStockP1, 26, waitingOrdersE26);
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP2, waitingOrdersP2, (int)plannedStockP2, 26, waitingOrdersE26);
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP3, waitingOrdersP3, (int)plannedStockP3, 26, waitingOrdersE26);
+        nextProdOrdersE26 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(25).getAmount().intValue();
         placeProduction(26, nextProdOrdersE26, productionlist);
         
         // POSITION 8 
@@ -289,6 +292,7 @@ public class CalculateBean {
         int nextProdOrdersE16 = planNextProductionOrders(nextProdOrdersE51, waitingOrdersE51, (int)plannedStockP1, 16, waitingOrdersE16);
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 16, waitingOrdersE16);
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 16, waitingOrdersE16);
+        nextProdOrdersE16 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(15).getAmount().intValue();
         placeProduction(16, nextProdOrdersE16, productionlist);
         
         // POSITION 9
@@ -296,6 +300,7 @@ public class CalculateBean {
         int nextProdOrdersE17 = planNextProductionOrders(nextProdOrdersE51, waitingOrdersE51, (int)plannedStockP1, 17, waitingOrdersE17);
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 17, waitingOrdersE17);
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 17, waitingOrdersE17);
+        nextProdOrdersE17 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(16).getAmount().intValue();
         placeProduction(17, nextProdOrdersE17, productionlist);
         
         // Calculate E50, E55, E30 (multiple used articles) waitingorders and next production orders for placement and further operations
@@ -566,7 +571,7 @@ public class CalculateBean {
                              - resultDTO.getResult().getWarehousestock().getArticle().get(articleNo-1).getAmount().intValue()
                              - waitingOrders;
         
-        if (productionOrders < 0) {
+        if (productionOrders < 0 && (articleNo != 16 || articleNo != 17 || articleNo != 26)) {
             productionOrders = 0;
         }
         
