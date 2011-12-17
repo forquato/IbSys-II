@@ -571,7 +571,7 @@ public class CalculateBean {
                              - resultDTO.getResult().getWarehousestock().getArticle().get(articleNo-1).getAmount().intValue()
                              - waitingOrders;
         
-        if (productionOrders < 0 && (articleNo != 16 || articleNo != 17 || articleNo != 26)) {
+        if (productionOrders < 0 && articleNo != 16 && articleNo != 17 && articleNo != 26) {
             productionOrders = 0;
         }
         
@@ -613,10 +613,12 @@ public class CalculateBean {
      * @param productionlist 
      */
     private void placeProduction(int article, int quantity, Productionlist productionlist) {
-        Production production = new Production();
-        production.setArticle(BigInteger.valueOf(article));
-        production.setQuantity(BigInteger.valueOf(quantity));
-        productionlist.getProduction().add(production);
+        if (quantity != 0) {
+            Production production = new Production();
+            production.setArticle(BigInteger.valueOf(article));
+            production.setQuantity(BigInteger.valueOf(quantity));
+            productionlist.getProduction().add(production);
+        }
     }
     
     /**
