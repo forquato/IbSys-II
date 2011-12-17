@@ -5,10 +5,12 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
-
         <ui:composition template="./template.xhtml">
 
             <ui:define name="content">
+                <h:head>
+                    <title><h:outputText value="#{msg['ibsys.error.title']}"/></title>
+                </h:head>
                 <li style="margin-top: 50px; color:red">
                     <h:outputText value="#{msg['ibsys.error']}"/>
                 </li>
@@ -18,6 +20,5 @@
             </ui:define>
 
         </ui:composition>
-
     </body>
 </html>

@@ -4,12 +4,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
+    
 
     <h:body>
-
         <ui:composition template="./template.xhtml">
             
             <ui:define name="content">
+                <h:head>
+                    <title><h:outputText value="#{msg['ibsys.title']}"/></title>
+                </h:head>
                 <f:view locale="#{languageBean.locale}">
                     <h:form>
                         <h:commandButton action="#{fileBean.start}" image="./resources/img/must_have_next_256.png" style="margin-top: 30px"/>
@@ -21,6 +24,5 @@
             </ui:define>
             
         </ui:composition>
-
     </h:body>
 </html>

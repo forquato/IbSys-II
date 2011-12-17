@@ -5,14 +5,13 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     
-    <h:head>
-        <title><h:outputText value="#{msg['forecast.title']}"/></title>
-    </h:head>
     <body>
-
         <ui:composition template="./template.xhtml">
             
             <ui:define name="content">
+                <h:head>
+                    <title><h:outputText value="#{msg['forecast.title']}"/></title>
+                </h:head>
                 <f:view locale="#{languageBean.locale}">
                     <h1><h:outputText value="#{msg['forecast.h1']}"/></h1>
                     <div class="meter">
@@ -183,6 +182,5 @@
             </ui:define>
 
         </ui:composition>
-
     </body>
 </html>

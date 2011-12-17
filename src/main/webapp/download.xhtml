@@ -7,10 +7,12 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
-
         <ui:composition template="./template.xhtml">
             
             <ui:define name="content">
+                <h:head>
+                    <title><h:outputText value="#{msg['download.title']}"/></title>
+                </h:head>
                 <f:view locale="#{languageBean.locale}">
                     <h1><h:outputText value="#{msg['download.h1']}"/></h1>
                     <div class="meter">
@@ -32,6 +34,5 @@
             </ui:define>
             
         </ui:composition>
-
     </body>
 </html>
