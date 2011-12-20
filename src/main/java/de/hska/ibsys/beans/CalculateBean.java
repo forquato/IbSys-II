@@ -83,7 +83,7 @@ public class CalculateBean {
     }
     
     private void setSellwishAndSelldirect() {
-        // SELLWISH
+        // Set sellwishes for P1, P2, P3
         Item itemP1 = new Item();
         Item itemP2 = new Item();
         Item itemP3 = new Item();
@@ -103,7 +103,7 @@ public class CalculateBean {
         
         input.setSellwish(sellwish);
         
-        // SELLDIRECT
+        // Set selldirects for P1, P2, P3
         Item itemSelldirectP1 = new Item();
         Item itemSelldirectP2 = new Item();
         Item itemSelldirectP3 = new Item();
@@ -137,6 +137,8 @@ public class CalculateBean {
     private void setOrderlist() {
         Orderlist orderlist = new Orderlist();
         
+        // Information about each item
+        // itemNo, deliverytime, deviation, consumption P1, consumption P2, consumption P3, discount quantity
         List<double[]> orderInfoList = new ArrayList<double[]>();
         orderInfoList.add(new double[]{21,1.8,0.4,1,0,0,300});
         orderInfoList.add(new double[]{22,1.7,0.4,0,1,0,300});
@@ -237,7 +239,7 @@ public class CalculateBean {
     private void setProductionlist() {
         
         Productionlist productionlist = new Productionlist();
-        planPStockAtEndOfPeriod();
+        planPStock();
         
         // Calculate P1, P2, P3 waitingorders and next production orders for placement and further operations
         int[][] E1_E2_E3 = new int[3][2];
@@ -254,12 +256,12 @@ public class CalculateBean {
         E1_E2_E3[2][0] = 3;
         E1_E2_E3[2][1] = nextProdOrdersP3;
         
-        // Sort planned stock of P1, P2 and P3
+        // Plan priority of P1, P2 and P3
         int[][] priority = new int[][]{{1,(int)nextProdOrdersP1},{2,(int)nextProdOrdersP2},{3,(int)nextProdOrdersP3}};
-        sortStockList(priority);
+        sort(priority);
         
         // POSITION 1, 2, 3
-        setPositions(productionlist, E1_E2_E3, priority);
+        addBlockProductions(productionlist, E1_E2_E3, priority);
         
         // Calculate E51, E56, E31 waitingorders and next production orders for placement and further operations
         int[][] E51_E56_E31 = new int[3][2];
@@ -276,7 +278,7 @@ public class CalculateBean {
         E51_E56_E31[2][0] = 31;
         E51_E56_E31[2][1] = nextProdOrdersE31;
         // POSITION 4, 5, 6
-        setPositions(productionlist, E51_E56_E31, priority);
+        addBlockProductions(productionlist, E51_E56_E31, priority);
         
         // Calculate E26, E16, E17 (multiple used articles) waitingorders and next production orders for placement and further operations
         // POSITION 7
@@ -285,7 +287,7 @@ public class CalculateBean {
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP2, waitingOrdersP2, (int)plannedStockP2, 26, waitingOrdersE26);
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP3, waitingOrdersP3, (int)plannedStockP3, 26, waitingOrdersE26);
         nextProdOrdersE26 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(25).getAmount().intValue();
-        placeProduction(26, nextProdOrdersE26, productionlist);
+        addProduction(26, nextProdOrdersE26, productionlist);
         
         // POSITION 8 
         int waitingOrdersE16 = calculateWaitingOrders(16);
@@ -293,7 +295,7 @@ public class CalculateBean {
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 16, waitingOrdersE16);
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 16, waitingOrdersE16);
         nextProdOrdersE16 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(15).getAmount().intValue();
-        placeProduction(16, nextProdOrdersE16, productionlist);
+        addProduction(16, nextProdOrdersE16, productionlist);
         
         // POSITION 9
         int waitingOrdersE17 = calculateWaitingOrders(17);
@@ -301,7 +303,7 @@ public class CalculateBean {
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 17, waitingOrdersE17);
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 17, waitingOrdersE17);
         nextProdOrdersE17 += 2*resultDTO.getResult().getWarehousestock().getArticle().get(16).getAmount().intValue();
-        placeProduction(17, nextProdOrdersE17, productionlist);
+        addProduction(17, nextProdOrdersE17, productionlist);
         
         // Calculate E50, E55, E30 (multiple used articles) waitingorders and next production orders for placement and further operations
         int[][] E50_E55_E30 = new int[3][2];
@@ -318,7 +320,7 @@ public class CalculateBean {
         E50_E55_E30[2][0] = 30;
         E50_E55_E30[2][1] = nextProdOrdersE30;
         // POSITION 10, 11, 12
-        setPositions(productionlist, E50_E55_E30, priority);
+        addBlockProductions(productionlist, E50_E55_E30, priority);
         
         // Calculate E4, E10, E49 waitingorders and next production orders for placement and further operations
         int[][] E4_E10_E49 = new int[3][2];
@@ -368,27 +370,27 @@ public class CalculateBean {
         
         // POSITION 13, 14, 15
         if (priority[0][0] == 1) {
-            setPositions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[0][0] == 2) {
-            setPositions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[0][0] == 3) {
-            setPositions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
         }
         // POSITION 16, 17, 18
         if (priority[1][0] == 1) {
-            setPositions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[1][0] == 2) {
-            setPositions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[1][0] == 3) {
-            setPositions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
         }
         // POSITION 19, 20, 21
         if (priority[2][0] == 1) {
-            setPositions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[2][0] == 2) {
-            setPositions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[2][0] == 3) {
-            setPositions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
         }
         
         // Calculate E7, E13, E18 waitingorders and next production orders for placement
@@ -438,27 +440,27 @@ public class CalculateBean {
         
         // POSITION 22, 23, 24
         if (priority[0][0] == 1) {
-            setPositions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[0][0] == 2) {
-            setPositions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[0][0] == 3) {
-            setPositions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
         }
         // POSITION 25, 26, 27
         if (priority[1][0] == 1) {
-            setPositions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[1][0] == 2) {
-            setPositions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[1][0] == 3) {
-            setPositions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
         }
         // POSITION 28, 29, 30
         if (priority[2][0] == 1) {
-            setPositions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[2][0] == 2) {
-            setPositions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E8_E14_E19, new int[][]{{1,1},{2,1},{3,1}});
         } else if (priority[2][0] == 3) {
-            setPositions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
+            addBlockProductions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
         }
         
         input.setProductionlist(productionlist);
@@ -534,7 +536,7 @@ public class CalculateBean {
     /**
      * Plans the stock for P1, P2 and P3 at the and of the next period
      */
-    private void planPStockAtEndOfPeriod() {
+    private void planPStock() {
         ResourceBundle bundle = ResourceBundle.getBundle(Constant.CALCULATE_RESOURCE);
         double factorPeriod1 = Double.valueOf(bundle.getString("factor.period1"));
         double factorPeriod2 = Double.valueOf(bundle.getString("factor.period2"));
@@ -612,7 +614,7 @@ public class CalculateBean {
      * @param quantity
      * @param productionlist 
      */
-    private void placeProduction(int article, int quantity, Productionlist productionlist) {
+    private void addProduction(int article, int quantity, Productionlist productionlist) {
         if (quantity != 0) {
             Production production = new Production();
             production.setArticle(BigInteger.valueOf(article));
@@ -628,29 +630,29 @@ public class CalculateBean {
      * @param nextProdOrders
      * @param priority 
      */
-    private void setPositions(Productionlist productionlist, int[][] nextProdOrders, int[][] priority) {
+    private void addBlockProductions(Productionlist productionlist, int[][] nextProdOrders, int[][] priority) {
         if (priority[0][0] == 1) {
-            placeProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
+            addProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
         } else if (priority[0][0] == 2) {
-            placeProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
+            addProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
         } else if (priority[0][0] == 3) {
-            placeProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
+            addProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
         }
         
         if (priority[1][0] == 1) {
-            placeProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
+            addProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
         } else if (priority[1][0] == 2) {
-            placeProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
+            addProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
         } else if (priority[1][0] == 3) {
-            placeProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
+            addProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
         }
                 
         if (priority[2][0] == 1) {
-            placeProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
+            addProduction(nextProdOrders[0][0], nextProdOrders[0][1], productionlist);
         } else if (priority[2][0] == 2) {
-            placeProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
+            addProduction(nextProdOrders[1][0], nextProdOrders[1][1], productionlist);
         } else if (priority[2][0] == 3) {
-            placeProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
+            addProduction(nextProdOrders[2][0], nextProdOrders[2][1], productionlist);
         }
     }
     
@@ -660,7 +662,7 @@ public class CalculateBean {
      * @param priority
      * @return the priority list of P1, P2 and P3
      */
-    private int[][] sortStockList(int[][] priority) {  
+    private int[][] sort(int[][] priority) {  
         boolean unsorted = true;
         int temp0;
         int temp1;
