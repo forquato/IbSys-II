@@ -22,7 +22,7 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
  */
 @Named
 @SessionScoped
-public class FileBean implements Serializable {
+public class MgdBean implements Serializable {
     
     private InputDTO inputDTO;
     private ResultDTO resultDTO;
@@ -76,6 +76,11 @@ public class FileBean implements Serializable {
         this.uploadedFile = uploadedFile;
     }
     
+    public ChartBean getChartBean() {
+        ChartBean chartBean = new ChartBean(inputDTO);
+        return chartBean;
+    }
+    
     /**
      * Starts the page flow
      * 
@@ -127,8 +132,8 @@ public class FileBean implements Serializable {
         // Get the filled input-Object 
         inputDTO = calculateBean.getInputDTO();
         
-        // Redirect the user to the download page
-        FacesContext.getCurrentInstance().getExternalContext().redirect(Constant.PAGE_DOWNLOAD);
+        // Redirect the user to the chart page
+        FacesContext.getCurrentInstance().getExternalContext().redirect(Constant.PAGE_CHART);
     }
     
     /**

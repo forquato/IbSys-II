@@ -20,19 +20,19 @@
                         <span style="width: 33%"></span>
                     </div>
                     <!-- enctype="multipart/form-data" -->
-                    <h:form enctype="multipart/form-data" style="margin-top: 60px">
-                        <c:if test="#{fileBean.resultDTO != null}">
+                    <h:form enctype="multipart/form-data" style="margin-top: 100px">
+                        <c:if test="#{mgdBean.resultDTO != null}">
                             <li style="margin-bottom: 10px; color: #666">
                                 <h:outputText value="#{msg['upload.warning']}"/>
                             </li>
                         </c:if>
-                        <t:inputFileUpload value="#{fileBean.uploadedFile}" style="color: #666;"/>
+                        <t:inputFileUpload value="#{mgdBean.uploadedFile}" style="color: #666;"/>
                         <li>
                             <h:messages style="color: red"/>
                         </li>
                         <div>
                             <h:button image="./resources/img/must_have_prev_48.png" outcome="index" style="margin: 15px 5px 0px 0px"/>
-                            <h:commandButton action="#{fileBean.submitUpload()}" image="./resources/img/must_have_next_48.png" style="margin: 15px 0px 0px 5px"/>
+                            <h:commandButton action="#{mgdBean.submitUpload()}" image="./resources/img/must_have_next_48.png" style="margin: 15px 0px 0px 5px"/>
                         </div>
                     </h:form>
                 </f:view>

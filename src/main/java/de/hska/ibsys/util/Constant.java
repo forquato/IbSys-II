@@ -10,6 +10,7 @@ public interface Constant {
     public static final String PAGE_INDEX = "index.htm";
     public static final String PAGE_UPLOAD = "upload.htm";
     public static final String PAGE_FORECAST = "forecast.htm";
+    public static final String PAGE_CHART = "chart.htm";
     public static final String PAGE_DOWNLOAD = "download.htm";
     
     // JAXB

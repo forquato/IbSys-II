@@ -19,16 +19,16 @@
                         <span style="width: 100%"></span>
                     </div>
                     <h:form>
-                        <h:button image="./resources/img/must_have_prev_48.png" outcome="forecast" style="margin-right: 100px; margin-top: 50px"/>
+                        <h:button image="./resources/img/must_have_prev_48.png" outcome="chart" style="margin-right: 100px; margin-top: 150px"/>
                         <c:choose>
-                            <c:when test="#{fileBean.inputDTO != null}">
+                            <c:when test="#{mgdBean.inputDTO != null}">
                                 <h:commandButton action="#{fileBean.submitDownload}" image="./resources/img/must_have_dl_256.png"  style="margin-left: 20px; margin-top: 50px"/>
                             </c:when>
                             <c:otherwise>
                                 <h:outputText value="#{msg['download.error']}" style="color: red"/>
                             </c:otherwise>
                         </c:choose>
-                        <h:commandButton action="#{fileBean.end}" image="./resources/img/must_have_next_48.png"  style="margin-left: 100px; margin-top: 50px"/>
+                        <h:button image="./resources/img/must_have_next_48.png" outcome="index" style="margin-left: 100px; margin-top: 50px"/>
                     </h:form>
                 </f:view>
             </ui:define>
