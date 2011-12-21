@@ -10,6 +10,7 @@ import de.hska.ibsys.input.Production;
 import de.hska.ibsys.input.Workingtime;
 import de.hska.ibsys.util.Constant;
 import java.util.ResourceBundle;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -21,7 +22,7 @@ public class ChartBean {
     
     private InputDTO inputDTO;
     
-    ResourceBundle bundle = ResourceBundle.getBundle(Constant.LOCALE_RESOURCES);
+    ResourceBundle bundle = ResourceBundle.getBundle(Constant.LOCALE_RESOURCES, FacesContext.getCurrentInstance().getViewRoot().getLocale());
     
     public ChartBean(InputDTO inputDTO) {
         this.inputDTO = inputDTO;

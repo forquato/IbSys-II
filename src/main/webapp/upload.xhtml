@@ -17,7 +17,7 @@
                 <f:view locale="#{languageBean.locale}">
                     <h1><h:outputText value="#{msg['upload.h1']}"/></h1>
                     <div class="meter">
-                        <span style="width: 33%"></span>
+                        <span style="width: 25%"></span>
                     </div>
                     <!-- enctype="multipart/form-data" -->
                     <h:form enctype="multipart/form-data" style="margin-top: 100px">
@@ -31,8 +31,8 @@
                             <h:messages style="color: red"/>
                         </li>
                         <div>
-                            <h:button image="./resources/img/must_have_prev_48.png" outcome="index" style="margin: 15px 5px 0px 0px"/>
-                            <h:commandButton action="#{mgdBean.submitUpload()}" image="./resources/img/must_have_next_48.png" style="margin: 15px 0px 0px 5px"/>
+                            <h:button image="./resources/img/prev_48.png" outcome="index" style="margin: 15px 5px 0px 0px"/>
+                            <h:commandButton action="#{mgdBean.submitUpload()}" image="./resources/img/next_48.png" style="margin: 15px 0px 0px 5px"/>
                         </div>
                     </h:form>
                 </f:view>

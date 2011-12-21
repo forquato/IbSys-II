@@ -15,15 +15,15 @@
                 <f:view locale="#{languageBean.locale}">
                     <h1><h:outputText value="#{msg['forecast.h1']}"/></h1>
                     <div class="meter">
-                        <span style="width: 66%"></span>
+                        <span style="width: 50%"></span>
                     </div>
                     <h:form id="Form">
                         <table border="0" style="margin-top: 100px; margin-bottom: 10px; width: 100%">
                             <tr>
                                 <th></th>
-                                <th style="background: #228B22"><h:outputText value="#{msg['forecast.salesOrders']}" style="color: white"/></th>
-                                <th colspan="3" style="background: #228B22"><h:outputText value="#{msg['forecast.forecasts']}" style="color: white"/></th>
-                                <th colspan="3" style="background: #228B22"><h:outputText value="#{msg['forecast.selldirect']}" style="color: white"/></th>
+                                <th style="background: #666"><h:outputText value="#{msg['forecast.salesOrders']}" style="color: white"/></th>
+                                <th colspan="3" style="background: #666"><h:outputText value="#{msg['forecast.forecasts']}" style="color: white"/></th>
+                                <th colspan="3" style="background: #666"><h:outputText value="#{msg['forecast.selldirect']}" style="color: white"/></th>
                             </tr>
                             <tr style="background: #E0E0E0">
                                 <th><h:outputText value="#{msg['forecast.period']}" style="margin-right: 10px"/></th>
@@ -175,8 +175,8 @@
                                 </td>
                             </tr>
                         </table>
-                        <h:button image="./resources/img/must_have_prev_48.png" outcome="upload" style="margin-right: 5px"/>
-                        <h:commandButton action="#{mgdBean.submitForcasts}" image="./resources/img/must_have_next_48.png" style="margin-left: 5px"/>
+                        <h:button image="./resources/img/prev_48.png" outcome="upload" style="margin-right: 5px"/>
+                        <h:commandButton action="#{mgdBean.submitForcasts}" image="./resources/img/next_48.png" style="margin-left: 5px"/>
                     </h:form>
                 </f:view>
             </ui:define>

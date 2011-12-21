@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
  *
  * @author p0004
  */
-// TODO: Kapazitätsgrenze der Maschinen bei den Porduktionsaufträgen beachten
 // TODO: Keine Extraschichten oder Überstunden anordnen, wenn kein Material zur bearbeitung bereit stehen kann
 // TODO: Losgrößensplitting einfuehren
 public class CalculateBean {
