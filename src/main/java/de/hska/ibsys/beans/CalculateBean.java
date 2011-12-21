@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
  *
  * @author p0004
  */
+// TODO: Kapazitätsgrenze der Maschinen bei den Porduktionsaufträgen beachten
+// TODO: Keine Extraschichten oder Überstunden anordnen, wenn kein Material zur bearbeitung bereit stehen kann
+// TODO: Losgrößensplitting einfuehren
 public class CalculateBean {
     
     private ResultDTO resultDTO;
@@ -243,16 +246,16 @@ public class CalculateBean {
         
         // Calculate P1, P2, P3 waitingorders and next production orders for placement and further operations
         int[][] E1_E2_E3 = new int[3][2];
-        int waitingOrdersP1 = calculateWaitingOrders(1);
-        int nextProdOrdersP1 = planNextProductionOrders(resultDTO.getSalesOrdersP1(),0, (int)plannedStockP1, 1, waitingOrdersP1);
+        int[] waitingOrdersP1 = calculateWaitingOrders(1);
+        int nextProdOrdersP1 = planNextProductionOrders(resultDTO.getSalesOrdersP1(),new int[]{0,0}, (int)plannedStockP1, 1, waitingOrdersP1);
         E1_E2_E3[0][0] = 1;
         E1_E2_E3[0][1] = nextProdOrdersP1;
-        int waitingOrdersP2 = calculateWaitingOrders(2);
-        int nextProdOrdersP2 = planNextProductionOrders(resultDTO.getSalesOrdersP2(),0, (int)plannedStockP2, 2, waitingOrdersP2);
+        int[] waitingOrdersP2 = calculateWaitingOrders(2);
+        int nextProdOrdersP2 = planNextProductionOrders(resultDTO.getSalesOrdersP2(),new int[]{0,0}, (int)plannedStockP2, 2, waitingOrdersP2);
         E1_E2_E3[1][0] = 2;
         E1_E2_E3[1][1] = nextProdOrdersP2;        
-        int waitingOrdersP3 = calculateWaitingOrders(3);
-        int nextProdOrdersP3 = planNextProductionOrders(resultDTO.getSalesOrdersP3(),0, (int)plannedStockP3, 3, waitingOrdersP3);
+        int[] waitingOrdersP3 = calculateWaitingOrders(3);
+        int nextProdOrdersP3 = planNextProductionOrders(resultDTO.getSalesOrdersP3(),new int[]{0,0}, (int)plannedStockP3, 3, waitingOrdersP3);
         E1_E2_E3[2][0] = 3;
         E1_E2_E3[2][1] = nextProdOrdersP3;
         
@@ -265,15 +268,15 @@ public class CalculateBean {
         
         // Calculate E51, E56, E31 waitingorders and next production orders for placement and further operations
         int[][] E51_E56_E31 = new int[3][2];
-        int waitingOrdersE51 = calculateWaitingOrders(51);
+        int waitingOrdersE51[] = calculateWaitingOrders(51);
         int nextProdOrdersE51 = planNextProductionOrders(nextProdOrdersP1, waitingOrdersP1, (int)plannedStockP1, 51, waitingOrdersE51);
         E51_E56_E31[0][0] = 51;
         E51_E56_E31[0][1] = nextProdOrdersE51;
-        int waitingOrdersE56 = calculateWaitingOrders(56);
+        int waitingOrdersE56[] = calculateWaitingOrders(56);
         int nextProdOrdersE56 = planNextProductionOrders(nextProdOrdersP2, waitingOrdersP2, (int)plannedStockP2, 56, waitingOrdersE56);
         E51_E56_E31[1][0] = 56;
         E51_E56_E31[1][1] = nextProdOrdersE56;
-        int waitingOrdersE31 = calculateWaitingOrders(31);
+        int waitingOrdersE31[] = calculateWaitingOrders(31);
         int nextProdOrdersE31 = planNextProductionOrders(nextProdOrdersP3, waitingOrdersP3, (int)plannedStockP3, 31, waitingOrdersE31);
         E51_E56_E31[2][0] = 31;
         E51_E56_E31[2][1] = nextProdOrdersE31;
@@ -282,7 +285,7 @@ public class CalculateBean {
         
         // Calculate E26, E16, E17 (multiple used articles) waitingorders and next production orders for placement and further operations
         // POSITION 7
-        int waitingOrdersE26 = calculateWaitingOrders(26);
+        int waitingOrdersE26[] = calculateWaitingOrders(26);
         int nextProdOrdersE26 = planNextProductionOrders(nextProdOrdersP1, waitingOrdersP1, (int)plannedStockP1, 26, waitingOrdersE26);
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP2, waitingOrdersP2, (int)plannedStockP2, 26, waitingOrdersE26);
         nextProdOrdersE26 += planNextProductionOrders(nextProdOrdersP3, waitingOrdersP3, (int)plannedStockP3, 26, waitingOrdersE26);
@@ -290,7 +293,7 @@ public class CalculateBean {
         addProduction(26, nextProdOrdersE26, productionlist);
         
         // POSITION 8 
-        int waitingOrdersE16 = calculateWaitingOrders(16);
+        int waitingOrdersE16[] = calculateWaitingOrders(16);
         int nextProdOrdersE16 = planNextProductionOrders(nextProdOrdersE51, waitingOrdersE51, (int)plannedStockP1, 16, waitingOrdersE16);
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 16, waitingOrdersE16);
         nextProdOrdersE16 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 16, waitingOrdersE16);
@@ -298,7 +301,7 @@ public class CalculateBean {
         addProduction(16, nextProdOrdersE16, productionlist);
         
         // POSITION 9
-        int waitingOrdersE17 = calculateWaitingOrders(17);
+        int waitingOrdersE17[] = calculateWaitingOrders(17);
         int nextProdOrdersE17 = planNextProductionOrders(nextProdOrdersE51, waitingOrdersE51, (int)plannedStockP1, 17, waitingOrdersE17);
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 17, waitingOrdersE17);
         nextProdOrdersE17 += planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 17, waitingOrdersE17);
@@ -307,15 +310,15 @@ public class CalculateBean {
         
         // Calculate E50, E55, E30 (multiple used articles) waitingorders and next production orders for placement and further operations
         int[][] E50_E55_E30 = new int[3][2];
-        int waitingOrdersE50 = calculateWaitingOrders(50);
+        int waitingOrdersE50[] = calculateWaitingOrders(50);
         int nextProdOrdersE50 = planNextProductionOrders(nextProdOrdersE51, waitingOrdersE51, (int)plannedStockP1, 50, waitingOrdersE50);
         E50_E55_E30[0][0] = 50;
         E50_E55_E30[0][1] = nextProdOrdersE50;
-        int waitingOrdersE55 = calculateWaitingOrders(55);
+        int waitingOrdersE55[] = calculateWaitingOrders(55);
         int nextProdOrdersE55 = planNextProductionOrders(nextProdOrdersE56, waitingOrdersE56, (int)plannedStockP2, 55, waitingOrdersE55);
         E50_E55_E30[1][0]=55;
         E50_E55_E30[1][1] = nextProdOrdersE55;
-        int waitingOrdersE30 = calculateWaitingOrders(30);
+        int waitingOrdersE30[] = calculateWaitingOrders(30);
         int nextProdOrdersE30 = planNextProductionOrders(nextProdOrdersE31, waitingOrdersE31, (int)plannedStockP3, 30, waitingOrdersE30);
         E50_E55_E30[2][0] = 30;
         E50_E55_E30[2][1] = nextProdOrdersE30;
@@ -324,49 +327,48 @@ public class CalculateBean {
         
         // Calculate E4, E10, E49 waitingorders and next production orders for placement and further operations
         int[][] E4_E10_E49 = new int[3][2];
-        int waitingOrdersE4 = calculateWaitingOrders(4);
+        int waitingOrdersE4[] = calculateWaitingOrders(4);
         int nextProdOrdersE4 = planNextProductionOrders(nextProdOrdersE50, waitingOrdersE50, (int)plannedStockP1, 4, waitingOrdersE4);
         E4_E10_E49[0][0] = 4;
         E4_E10_E49[0][1] = nextProdOrdersE4;
-        int waitingOrdersE10 = calculateWaitingOrders(10);
+        int waitingOrdersE10[] = calculateWaitingOrders(10);
         int nextProdOrdersE10 = planNextProductionOrders(nextProdOrdersE50, waitingOrdersE50, (int)plannedStockP2, 10, waitingOrdersE10);
         E4_E10_E49[1][0] = 10;
         E4_E10_E49[1][1] = nextProdOrdersE10;
-        int waitingOrdersE49 = calculateWaitingOrders(49);
+        int waitingOrdersE49[] = calculateWaitingOrders(49);
         int nextProdOrdersE49 = planNextProductionOrders(nextProdOrdersE50, waitingOrdersE50, (int)plannedStockP3, 49, waitingOrdersE49);
         E4_E10_E49[2][0] = 49;
         E4_E10_E49[2][1] = nextProdOrdersE49;
         
         // Calculate E5, E11, E54 waitingorders and next production orders for placement and further operations
         int[][] E5_E11_E54 = new int[3][2];
-        int waitingOrdersE5 = calculateWaitingOrders(5);
+        int waitingOrdersE5[] = calculateWaitingOrders(5);
         int nextProdOrdersE5 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE55, (int)plannedStockP1, 5, waitingOrdersE5);
         E5_E11_E54[0][0] = 5;
         E5_E11_E54[0][1] = nextProdOrdersE5;
-        int waitingOrdersE11 = calculateWaitingOrders(11);
+        int waitingOrdersE11[] = calculateWaitingOrders(11);
         int nextProdOrdersE11 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE55, (int)plannedStockP2, 11, waitingOrdersE11);
         E5_E11_E54[1][0] = 11;
         E5_E11_E54[1][1] = nextProdOrdersE11;
-        int waitingOrdersE54 = calculateWaitingOrders(54);
+        int waitingOrdersE54[] = calculateWaitingOrders(54);
         int nextProdOrdersE54 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE55, (int)plannedStockP3, 54, waitingOrdersE54);
         E5_E11_E54[2][0] = 54;
         E5_E11_E54[2][1] = nextProdOrdersE54;
         
         // Calculate E6, E12, E29 waitingorders and next production orders for placement and further operations
         int[][] E6_E12_E29 = new int[3][2];
-        int waitingOrdersE6 = calculateWaitingOrders(6);
+        int waitingOrdersE6[] = calculateWaitingOrders(6);
         int nextProdOrdersE6 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE30, (int)plannedStockP1, 6, waitingOrdersE6);
         E6_E12_E29[0][0] = 6;
         E6_E12_E29[0][1] = nextProdOrdersE6;
-        int waitingOrdersE12 = calculateWaitingOrders(12);
+        int waitingOrdersE12[] = calculateWaitingOrders(12);
         int nextProdOrdersE12 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE30, (int)plannedStockP2, 12, waitingOrdersE12);
         E6_E12_E29[1][0] = 12;
         E6_E12_E29[1][1] = nextProdOrdersE12;
-        int waitingOrdersE29 = calculateWaitingOrders(29);
+        int waitingOrdersE29[] = calculateWaitingOrders(29);
         int nextProdOrdersE29 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE30, (int)plannedStockP3, 29, waitingOrdersE29);
         E6_E12_E29[2][0] = 29;
         E6_E12_E29[2][1] = nextProdOrdersE29;
-
         
         // POSITION 13, 14, 15
         if (priority[0][0] == 1) {
@@ -395,45 +397,45 @@ public class CalculateBean {
         
         // Calculate E7, E13, E18 waitingorders and next production orders for placement
         int[][] E7_E13_E18 = new int[3][2];
-        int waitingOrdersE7 = calculateWaitingOrders(7);
+        int waitingOrdersE7[] = calculateWaitingOrders(7);
         int nextProdOrdersE7 = planNextProductionOrders(nextProdOrdersE49, waitingOrdersE49, (int)plannedStockP1, 7, waitingOrdersE7);
         E7_E13_E18[0][0] = 7;
         E7_E13_E18[0][1] = nextProdOrdersE7;
-        int waitingOrdersE13 = calculateWaitingOrders(13);
+        int waitingOrdersE13[] = calculateWaitingOrders(13);
         int nextProdOrdersE13 = planNextProductionOrders(nextProdOrdersE49, waitingOrdersE49, (int)plannedStockP2, 4, waitingOrdersE13);
         E7_E13_E18[1][0] = 13;
         E7_E13_E18[1][1] = nextProdOrdersE13;
-        int waitingOrdersE18 = calculateWaitingOrders(18);
+        int waitingOrdersE18[] = calculateWaitingOrders(18);
         int nextProdOrdersE18 = planNextProductionOrders(nextProdOrdersE49, waitingOrdersE49, (int)plannedStockP3, 18, waitingOrdersE18);
         E7_E13_E18[2][0] = 18;
         E7_E13_E18[2][1] = nextProdOrdersE18;
         
         // Calculate E8, E14, E19 waitingorders and next production orders for placement
         int[][] E8_E14_E19 = new int[3][2];
-        int waitingOrdersE8 = calculateWaitingOrders(8);
+        int waitingOrdersE8[] = calculateWaitingOrders(8);
         int nextProdOrdersE8 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE54, (int)plannedStockP1, 8, waitingOrdersE8);
         E8_E14_E19[0][0] = 8;
         E8_E14_E19[0][1] = nextProdOrdersE8;
-        int waitingOrdersE14 = calculateWaitingOrders(14);
+        int waitingOrdersE14[] = calculateWaitingOrders(14);
         int nextProdOrdersE14 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE54, (int)plannedStockP2, 14, waitingOrdersE14);
         E8_E14_E19[1][0] = 14;
         E8_E14_E19[1][1] = nextProdOrdersE14;
-        int waitingOrdersE19 = calculateWaitingOrders(19);
+        int waitingOrdersE19[] = calculateWaitingOrders(19);
         int nextProdOrdersE19 = planNextProductionOrders(nextProdOrdersE55, waitingOrdersE54, (int)plannedStockP3, 19, waitingOrdersE19);
         E8_E14_E19[2][0] = 19;
         E8_E14_E19[2][1] = nextProdOrdersE19;
         
         // Calculate E9, E15, E20 waitingorders and next production orders for placement
         int[][] E9_E15_E20 = new int[3][2];
-        int waitingOrdersE9 = calculateWaitingOrders(9);
+        int waitingOrdersE9[] = calculateWaitingOrders(9);
         int nextProdOrdersE9 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE29, (int)plannedStockP1, 9, waitingOrdersE9);
         E9_E15_E20[0][0] = 9;
         E9_E15_E20[0][1] = nextProdOrdersE9;
-        int waitingOrdersE15 = calculateWaitingOrders(15);
+        int waitingOrdersE15[] = calculateWaitingOrders(15);
         int nextProdOrdersE15 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE29, (int)plannedStockP2, 15, waitingOrdersE15);
         E9_E15_E20[1][0] = 15;
         E9_E15_E20[1][1] = nextProdOrdersE15;
-        int waitingOrdersE20 = calculateWaitingOrders(20);
+        int waitingOrdersE20[] = calculateWaitingOrders(20);
         int nextProdOrdersE20 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE29, (int)plannedStockP3, 29, waitingOrdersE20);
         E9_E15_E20[2][0] = 20;
         E9_E15_E20[2][1] = nextProdOrdersE20;
@@ -566,18 +568,23 @@ public class CalculateBean {
      * @param waitingOrders
      * @return 
      */
-    private int planNextProductionOrders(int salesOrders, int prevWaiting, int plannedStock, int articleNo, int waitingOrders) {
-        int productionOrders = salesOrders
-                             + prevWaiting
-                             + plannedStock
-                             - resultDTO.getResult().getWarehousestock().getArticle().get(articleNo-1).getAmount().intValue()
-                             - waitingOrders;
+    private int planNextProductionOrders(int salesOrders, int prevWaitingOrders[], int plannedStock, int articleNo, int waitingOrders[]) {
+        double productionOrders = salesOrders
+                                + prevWaitingOrders[0]
+                                + plannedStock
+                                - resultDTO.getResult().getWarehousestock().getArticle().get(articleNo-1).getAmount().intValue()
+                                - waitingOrders[0]
+                                - waitingOrders[1];
         
+        // Don't reset quantity if article is multiple used
         if (productionOrders < 0 && articleNo != 16 && articleNo != 17 && articleNo != 26) {
             productionOrders = 0;
         }
         
-        return productionOrders;
+        // Round to nearest ten
+        int roundedProductionOrders = (int) Math.ceil(productionOrders / 10) * 10;
+        
+        return roundedProductionOrders;
     }
     
     /**
@@ -586,24 +593,28 @@ public class CalculateBean {
      * @param articleNo
      * @return the waitingorders
      */
-    // TODO: Splitting in to parts
-    private int calculateWaitingOrders(int articleNo) {
-        int waitingOrders = 0;
+    private int[] calculateWaitingOrders(int articleNo) {
+        int[] waitingOrders = new int[2];
+        
+        // Orders in work
         if (resultDTO.getResult().getOrdersinwork().getWorkplace() != null) {
             for(int i = 0; i < resultDTO.getResult().getOrdersinwork().getWorkplace().size(); i++) {
                 if (resultDTO.getResult().getOrdersinwork().getWorkplace().get(i).getItem().doubleValue() == articleNo)
-                    waitingOrders += resultDTO.getResult().getOrdersinwork().getWorkplace().get(i).getAmount().intValue();
+                    waitingOrders[0] += resultDTO.getResult().getOrdersinwork().getWorkplace().get(i).getAmount().intValue();
             }
         }
+        
+        // Orders in front of the workstation
         if (resultDTO.getResult().getWaitinglistworkstations().getWorkplace() != null) {
             for(int i = 0; i < resultDTO.getResult().getWaitinglistworkstations().getWorkplace().size(); i++) {
                 if (resultDTO.getResult().getWaitinglistworkstations().getWorkplace().get(i).getItem() != null) {
                     if (resultDTO.getResult().getWaitinglistworkstations().getWorkplace().get(i).getItem().intValue() == articleNo) {
-                        waitingOrders += resultDTO.getResult().getWaitinglistworkstations().getWorkplace().get(i).getAmount().intValue();
+                        waitingOrders[1] += resultDTO.getResult().getWaitinglistworkstations().getWorkplace().get(i).getAmount().intValue();
                     }
                 }
             }
         }
+        
         return waitingOrders;
     }
     
@@ -666,6 +677,7 @@ public class CalculateBean {
         boolean unsorted = true;
         int temp0;
         int temp1;
+        
         while (unsorted){
             unsorted = false;
             for (int i = 0; i < priority.length-1; i++)
@@ -679,6 +691,7 @@ public class CalculateBean {
                     unsorted = true;
                 }
         }
+        
         return priority;
     }
 }
