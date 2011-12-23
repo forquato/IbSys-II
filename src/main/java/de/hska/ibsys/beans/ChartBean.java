@@ -9,6 +9,7 @@ import de.hska.ibsys.input.Order;
 import de.hska.ibsys.input.Production;
 import de.hska.ibsys.input.Workingtime;
 import de.hska.ibsys.util.Constant;
+import java.math.BigInteger;
 import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.chart.CartesianChartModel;
@@ -125,7 +126,14 @@ public class ChartBean {
                 && inputDTO.getInput().getProductionlist().getProduction().size() > 0) {
             productionSeries.setLabel(localeProduction);
             for(Production production : inputDTO.getInput().getProductionlist().getProduction()) {
-                productionSeries.set(String.valueOf(production.getArticle()), production.getQuantity());
+                String article = String.valueOf(production.getArticle());
+                int quantity = 0;
+                for (Production tempProduction : inputDTO.getInput().getProductionlist().getProduction()) {
+                    if (article.equals(tempProduction.getArticle().toString())) {
+                        quantity += tempProduction.getQuantity().intValue();
+                    }
+                }
+                productionSeries.set(article, quantity);
             }
         } else {
             for(int i = 1; i < 37; i++) {
