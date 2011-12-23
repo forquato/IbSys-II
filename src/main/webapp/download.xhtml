@@ -19,16 +19,18 @@
                         <span style="width: 100%"></span>
                     </div>
                     <h:form>
-                        <h:button image="./resources/img/prev_48.png" outcome="chart" style="margin-right: 100px; margin-top: 200px"/>
                         <c:choose>
                             <c:when test="#{mgdBean.inputDTO != null}">
-                                <h:commandButton action="#{mgdBean.submitDownload}" image="./resources/img/save_128.png"  style="margin-left: 20px; margin-top: 50px"/>
+                                <h:commandButton action="#{mgdBean.submitDownload}" image="./resources/img/save_128.png"  style="margin-top: 100px"/>
                             </c:when>
                             <c:otherwise>
                                 <h:outputText value="#{msg['download.error']}" style="color: red"/>
                             </c:otherwise>
                         </c:choose>
-                        <h:button image="./resources/img/next_48.png" outcome="index" style="margin-left: 100px; margin-top: 50px"/>
+                        <li>
+                            <h:button image="./resources/img/prev_48.png" outcome="chart" style="margin: 20px 5px 0px 0px"/>
+                            <h:button image="./resources/img/next_48.png" outcome="index" style="margin: 20px 0px 0px 5px"/>
+                        </li>
                     </h:form>
                 </f:view>
             </ui:define>

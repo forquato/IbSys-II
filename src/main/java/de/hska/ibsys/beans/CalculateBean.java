@@ -582,7 +582,7 @@ public class CalculateBean {
         
         // Round to nearest ten
         int roundedProductionOrders = (int) Math.ceil(productionOrders / 10) * 10;
-        
+                
         return roundedProductionOrders;
     }
     

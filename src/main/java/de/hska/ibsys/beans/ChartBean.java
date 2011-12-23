@@ -49,7 +49,8 @@ public class ChartBean {
         ChartSeries shiftSeries = new ChartSeries();
         String localeShift = bundle.getString("chart.shifts");
         
-        if (inputDTO != null && inputDTO.getInput().getWorkingtimelist().getWorkingtime() != null) {
+        if (inputDTO != null && inputDTO.getInput().getWorkingtimelist().getWorkingtime() != null 
+                && inputDTO.getInput().getWorkingtimelist().getWorkingtime().size() > 0) {
             shiftSeries.setLabel(localeShift);
             for(Workingtime workingtime : inputDTO.getInput().getWorkingtimelist().getWorkingtime()) {
                 shiftSeries.set(String.valueOf(workingtime.getStation()), workingtime.getShift());
@@ -72,7 +73,8 @@ public class ChartBean {
         ChartSeries overtimeSeries = new ChartSeries();
         String localeOvertime = bundle.getString("chart.overtime");
         
-        if (inputDTO != null && inputDTO.getInput().getWorkingtimelist().getWorkingtime() != null) {
+        if (inputDTO != null && inputDTO.getInput().getWorkingtimelist().getWorkingtime() != null 
+                && inputDTO.getInput().getWorkingtimelist().getWorkingtime().size() > 0) {
             overtimeSeries.setLabel(localeOvertime);
             for(Workingtime workingtime : inputDTO.getInput().getWorkingtimelist().getWorkingtime()) {
                 overtimeSeries.set(String.valueOf(workingtime.getStation()), workingtime.getOvertime());
@@ -95,7 +97,8 @@ public class ChartBean {
         ChartSeries orderSeries = new ChartSeries();
         String localeOrder = bundle.getString("chart.ordered");
         
-        if (inputDTO != null && inputDTO.getInput().getOrderlist() != null) {
+        if (inputDTO != null && inputDTO.getInput().getOrderlist().getOrder() != null 
+                && inputDTO.getInput().getOrderlist().getOrder().size() > 0) {
             orderSeries.setLabel(localeOrder);
             for(Order order : inputDTO.getInput().getOrderlist().getOrder()) {
                 orderSeries.set(String.valueOf(order.getArticle()), order.getQuantity());
@@ -118,7 +121,8 @@ public class ChartBean {
         ChartSeries productionSeries = new ChartSeries();
         String localeProduction = bundle.getString("chart.produced");
         
-        if (inputDTO != null && inputDTO.getInput().getProductionlist() != null) {
+        if (inputDTO != null && inputDTO.getInput().getProductionlist().getProduction() != null 
+                && inputDTO.getInput().getProductionlist().getProduction().size() > 0) {
             productionSeries.setLabel(localeProduction);
             for(Production production : inputDTO.getInput().getProductionlist().getProduction()) {
                 productionSeries.set(String.valueOf(production.getArticle()), production.getQuantity());
