@@ -394,12 +394,9 @@ public class CalculateBean {
         int[][] priority = new int[][]{{1,(int)nextProdOrdersP1},{2,(int)nextProdOrdersP2},{3,(int)nextProdOrdersP3}};
         sort(priority);
         
+        // Split production orders
         while(next) {
             next = false;
-            addBlockProductions(productionlist, P1_P2_P3, priority);
-            addBlockProductions(productionlist, E51_E56_E31, priority);
-            addBlockProductions(productionlist, E26_E16_E17, priority);
-            addBlockProductions(productionlist, E50_E55_E30, priority);
             for (int i = 0; i < priority.length; i++) {
                 if (priority[i][0] == 1) {
                     addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
@@ -409,6 +406,10 @@ public class CalculateBean {
                     addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
                 }
             }
+            addBlockProductions(productionlist, P1_P2_P3, priority);
+            addBlockProductions(productionlist, E51_E56_E31, priority);
+            addBlockProductions(productionlist, E26_E16_E17, priority);
+            addBlockProductions(productionlist, E50_E55_E30, priority);
             for (int i = 0; i < priority.length; i++) {
                 if (priority[i][0] == 1) {
                     addBlockProductions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
@@ -420,6 +421,7 @@ public class CalculateBean {
             }
         }
         
+        // Set the splitted production list
         input.setProductionlist(productionlist);
     }
     
@@ -649,6 +651,7 @@ public class CalculateBean {
             } else {
                 if (nextProdOrders[i][1] > 0) {
                     splitOrders[i][1] = nextProdOrders[i][1];
+                    nextProdOrders[i][1] -= nextProdOrders[i][1];
                 }
             }
         }
