@@ -44,31 +44,21 @@ public class TestCalculateBean {
         resultDTO = null;
         calculateBean = null;
     }
-
+    
     @Test
     public void testAll() throws InterruptedException, SAXException {
         // Set sales orders, forecasts and selldirects
-        resultDTO.setSelldirectQuantityP1(100);
-        resultDTO.setSelldirectPenaltyP1(Double.valueOf(20.0));
-        resultDTO.setSelldirectPriceP1(Double.valueOf(190.0));
-        resultDTO.setSelldirectQuantityP2(0);
-        resultDTO.setSelldirectPenaltyP2(Double.valueOf(0.0));
-        resultDTO.setSelldirectPriceP2(Double.valueOf(0.0));
-        resultDTO.setSelldirectQuantityP3(0);
-        resultDTO.setSelldirectPenaltyP3(Double.valueOf(0.0));
-        resultDTO.setSelldirectPriceP3(Double.valueOf(0.0));
-        resultDTO.setSalesOrdersP1(200);
-        resultDTO.setForcastP1f1(150);
-        resultDTO.setForcastP1f2(100);
-        resultDTO.setForcastP1f3(150);
-        resultDTO.setSalesOrdersP2(50);
-        resultDTO.setForcastP2f1(50);
-        resultDTO.setForcastP2f2(100);
-        resultDTO.setForcastP2f3(100);
-        resultDTO.setSalesOrdersP3(150);
-        resultDTO.setForcastP3f1(150);
-        resultDTO.setForcastP3f2(100);
-        resultDTO.setForcastP3f3(150);
+        Integer[] selldirectQuantities = new Integer[] {100, 0, 0};
+        Double[] selldirectPenalties = new Double[] {Double.valueOf(20.0), Double.valueOf(0.0), Double.valueOf(0.0)};
+        Double[] selldirectPrices = new Double[] {Double.valueOf(190.0), Double.valueOf(0.0), Double.valueOf(0.0)};
+        Integer[] salesOrders = new Integer[] {150, 150, 150};
+        Integer[][] forcasts = new Integer[][] {{150,150,150},{100,100,50},{100,50,50}};
+        
+        resultDTO.setSelldirectQuantities(selldirectQuantities);
+        resultDTO.setSelldirectPrices(selldirectPrices);
+        resultDTO.setSelldirectPenalties(selldirectPenalties);
+        resultDTO.setSalesOrders(salesOrders);
+        resultDTO.setForcasts(forcasts);
         
         // Create a calculation bean for testing input methods
         calculateBean = new CalculateBean(resultDTO);

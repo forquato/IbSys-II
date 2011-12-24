@@ -38,45 +38,45 @@
                             <tr style="background: #F0F0F0">
                                 <td><h:outputText value="#{msg['forecast.p1']}"/></td>
                                 <td>
-                                    <h:inputText id="P1_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrdersP1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrders[0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P1_x1" maxlength="5" value="#{mgdBean.resultDTO.forcastP1f1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_x1" maxlength="5" value="#{mgdBean.resultDTO.forcasts[0][0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P1_x2" maxlength="5" value="#{mgdBean.resultDTO.forcastP1f2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_x2" maxlength="5" value="#{mgdBean.resultDTO.forcasts[0][1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P1_x3" maxlength="5" value="#{mgdBean.resultDTO.forcastP1f3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_x3" maxlength="5" value="#{mgdBean.resultDTO.forcasts[0][2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P1_quantity" value="#{mgdBean.resultDTO.selldirectQuantityP1}" onclick="this.select();this.focus()">
-                                        <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>   
-                                    </h:inputText>
-                                </td>
-                                <td>
-                                    <h:inputText id="P1_price" value="#{mgdBean.resultDTO.selldirectPriceP1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_quantity" value="#{mgdBean.resultDTO.selldirectQuantities[0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P1_penalty" value="#{mgdBean.resultDTO.selldirectPenaltyP1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P1_price" value="#{mgdBean.resultDTO.selldirectPrices[0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
+                                    </h:inputText>
+                                </td>
+                                <td>
+                                    <h:inputText id="P1_penalty" value="#{mgdBean.resultDTO.selldirectQuantities[0]}" onclick="this.select();this.focus()">
+                                        <f:validateLongRange minimum="0" maximum="99999"/>
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                             </tr>
@@ -85,45 +85,45 @@
                                     <h:outputText value="#{msg['forecast.p2']}"/>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrdersP2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrders[1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_x1" maxlength="5" value="#{mgdBean.resultDTO.forcastP2f1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_x1" maxlength="5" value="#{mgdBean.resultDTO.forcasts[1][0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_x2" maxlength="5" value="#{mgdBean.resultDTO.forcastP2f2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_x2" maxlength="5" value="#{mgdBean.resultDTO.forcasts[1][1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_x3" maxlength="5" value="#{mgdBean.resultDTO.forcastP2f3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_x3" maxlength="5" value="#{mgdBean.resultDTO.forcasts[1][2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_quantity" value="#{mgdBean.resultDTO.selldirectQuantityP2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_quantity" value="#{mgdBean.resultDTO.selldirectQuantities[1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_price" value="#{mgdBean.resultDTO.selldirectPriceP2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_price" value="#{mgdBean.resultDTO.selldirectPrices[1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P2_penalty" value="#{mgdBean.resultDTO.selldirectPenaltyP2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P2_penalty" value="#{mgdBean.resultDTO.selldirectQuantities[1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                             </tr>
@@ -132,45 +132,45 @@
                                     <h:outputText value="#{msg['forecast.p3']}"/>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrdersP3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_x" maxlength="5" value="#{mgdBean.resultDTO.salesOrders[2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_x1" maxlength="5" value="#{mgdBean.resultDTO.forcastP3f1}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_x1" maxlength="5" value="#{mgdBean.resultDTO.forcasts[2][0]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_x2" maxlength="5" value="#{mgdBean.resultDTO.forcastP3f2}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_x2" maxlength="5" value="#{mgdBean.resultDTO.forcasts[2][1]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_x3" maxlength="5" value="#{mgdBean.resultDTO.forcastP3f3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_x3" maxlength="5" value="#{mgdBean.resultDTO.forcasts[2][2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_quantity" value="#{mgdBean.resultDTO.selldirectQuantityP3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_quantity" value="#{mgdBean.resultDTO.selldirectQuantities[2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_price" value="#{mgdBean.resultDTO.selldirectPriceP3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_price" value="#{mgdBean.resultDTO.selldirectPrices[2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                                 <td>
-                                    <h:inputText id="P3_penalty" value="#{mgdBean.resultDTO.selldirectPenaltyP3}" onclick="this.select();this.focus()">
+                                    <h:inputText id="P3_penalty" value="#{mgdBean.resultDTO.selldirectQuantities[2]}" onclick="this.select();this.focus()">
                                         <f:validateLongRange minimum="0" maximum="99999"/>
-                                        <f:validateRequired/>    
+                                        <f:validateRequired/>
                                     </h:inputText>
                                 </td>
                             </tr>

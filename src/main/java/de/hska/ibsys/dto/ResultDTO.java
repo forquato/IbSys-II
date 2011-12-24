@@ -1,6 +1,8 @@
 package de.hska.ibsys.dto;
 
 import de.hska.ibsys.result.Results;
+import de.hska.ibsys.util.Constant;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -13,131 +15,47 @@ public class ResultDTO {
      */
     private Results result;
     
-    private Integer SalesOrdersP1 = 0;
-    private Integer SalesOrdersP2 = 0;
-    private Integer SalesOrdersP3 = 0;
-    private Integer ForcastP1f1 = 0;
-    private Integer ForcastP2f1 = 0;
-    private Integer ForcastP3f1 = 0;
-    private Integer ForcastP1f2 = 0;
-    private Integer ForcastP2f2 = 0;
-    private Integer ForcastP3f2 = 0;
-    private Integer ForcastP1f3 = 0;
-    private Integer ForcastP2f3 = 0;
-    private Integer ForcastP3f3 = 0;
-    
-    private Integer selldirectQuantityP1 = 0;
-    private Double selldirectPriceP1 = Double.valueOf(0);
-    private Double selldirectPenaltyP1 = Double.valueOf(0);
-    private Integer selldirectQuantityP2 = 0;
-    private Double selldirectPriceP2 = Double.valueOf(0);
-    private Double selldirectPenaltyP2 = Double.valueOf(0); 
-    private Integer selldirectQuantityP3 = 0;
-    private Double selldirectPriceP3 = Double.valueOf(0);
-    private Double selldirectPenaltyP3 = Double.valueOf(0);
-    
+    private ResourceBundle bundle = ResourceBundle.getBundle(Constant.CALCULATE_RESOURCE);
+    private Integer[] salesOrders = new Integer[3];
+    private Integer[][] forcasts = new Integer[3][3];
+    private Integer[] selldirectQuantities = new Integer[3];
+    private Double[] selldirectPrices = new Double[3];
+    private Double[] selldirectPenalties = new Double[3];
+    private double stockFactor = Double.valueOf(bundle.getString("factor.stock"));
+    private double[] periodFactors = new double[3];
+    private int[] setuptimes = new int[14];
     
     public ResultDTO() {
+        this.init();
     }
 
     public ResultDTO(Results result) {
         this.result = result;
+        this.init();
     }
 
-    public Integer getForcastP1f1() {
-        return ForcastP1f1;
+    public ResourceBundle getBundle() {
+        return bundle;
     }
 
-    public void setForcastP1f1(Integer ForcastP1f1) {
-        this.ForcastP1f1 = ForcastP1f1;
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
     }
 
-    public Integer getForcastP1f2() {
-        return ForcastP1f2;
+    public Integer[][] getForcasts() {
+        return forcasts;
     }
 
-    public void setForcastP1f2(Integer ForcastP1f2) {
-        this.ForcastP1f2 = ForcastP1f2;
+    public void setForcasts(Integer[][] forcasts) {
+        this.forcasts = forcasts;
     }
 
-    public Integer getForcastP1f3() {
-        return ForcastP1f3;
+    public double[] getPeriodFactors() {
+        return periodFactors;
     }
 
-    public void setForcastP1f3(Integer ForcastP1f3) {
-        this.ForcastP1f3 = ForcastP1f3;
-    }
-
-    public Integer getForcastP2f1() {
-        return ForcastP2f1;
-    }
-
-    public void setForcastP2f1(Integer ForcastP2f1) {
-        this.ForcastP2f1 = ForcastP2f1;
-    }
-
-    public Integer getForcastP2f2() {
-        return ForcastP2f2;
-    }
-
-    public void setForcastP2f2(Integer ForcastP2f2) {
-        this.ForcastP2f2 = ForcastP2f2;
-    }
-
-    public Integer getForcastP2f3() {
-        return ForcastP2f3;
-    }
-
-    public void setForcastP2f3(Integer ForcastP2f3) {
-        this.ForcastP2f3 = ForcastP2f3;
-    }
-
-    public Integer getForcastP3f1() {
-        return ForcastP3f1;
-    }
-
-    public void setForcastP3f1(Integer ForcastP3f1) {
-        this.ForcastP3f1 = ForcastP3f1;
-    }
-
-    public Integer getForcastP3f2() {
-        return ForcastP3f2;
-    }
-
-    public void setForcastP3f2(Integer ForcastP3f2) {
-        this.ForcastP3f2 = ForcastP3f2;
-    }
-
-    public Integer getForcastP3f3() {
-        return ForcastP3f3;
-    }
-
-    public void setForcastP3f3(Integer ForcastP3f3) {
-        this.ForcastP3f3 = ForcastP3f3;
-    }
-
-    public Integer getSalesOrdersP1() {
-        return SalesOrdersP1;
-    }
-
-    public void setSalesOrdersP1(Integer SalesOrdersP1) {
-        this.SalesOrdersP1 = SalesOrdersP1;
-    }
-
-    public Integer getSalesOrdersP2() {
-        return SalesOrdersP2;
-    }
-
-    public void setSalesOrdersP2(Integer SalesOrdersP2) {
-        this.SalesOrdersP2 = SalesOrdersP2;
-    }
-
-    public Integer getSalesOrdersP3() {
-        return SalesOrdersP3;
-    }
-
-    public void setSalesOrdersP3(Integer SalesOrdersP3) {
-        this.SalesOrdersP3 = SalesOrdersP3;
+    public void setPeriodFactors(double[] periodFactors) {
+        this.periodFactors = periodFactors;
     }
 
     public Results getResult() {
@@ -148,75 +66,82 @@ public class ResultDTO {
         this.result = result;
     }
 
-    public Double getSelldirectPenaltyP1() {
-        return selldirectPenaltyP1;
+    public Integer[] getSalesOrders() {
+        return salesOrders;
     }
 
-    public void setSelldirectPenaltyP1(Double selldirectPenaltyP1) {
-        this.selldirectPenaltyP1 = selldirectPenaltyP1;
+    public void setSalesOrders(Integer[] salesOrders) {
+        this.salesOrders = salesOrders;
     }
 
-    public Double getSelldirectPenaltyP2() {
-        return selldirectPenaltyP2;
+    public Double[] getSelldirectPenalties() {
+        return selldirectPenalties;
     }
 
-    public void setSelldirectPenaltyP2(Double selldirectPenaltyP2) {
-        this.selldirectPenaltyP2 = selldirectPenaltyP2;
+    public void setSelldirectPenalties(Double[] selldirectPenalties) {
+        this.selldirectPenalties = selldirectPenalties;
     }
 
-    public Double getSelldirectPenaltyP3() {
-        return selldirectPenaltyP3;
+    public Double[] getSelldirectPrices() {
+        return selldirectPrices;
     }
 
-    public void setSelldirectPenaltyP3(Double selldirectPenaltyP3) {
-        this.selldirectPenaltyP3 = selldirectPenaltyP3;
+    public void setSelldirectPrices(Double[] selldirectPrices) {
+        this.selldirectPrices = selldirectPrices;
     }
 
-    public Double getSelldirectPriceP1() {
-        return selldirectPriceP1;
+    public Integer[] getSelldirectQuantities() {
+        return selldirectQuantities;
     }
 
-    public void setSelldirectPriceP1(Double selldirectPriceP1) {
-        this.selldirectPriceP1 = selldirectPriceP1;
+    public void setSelldirectQuantities(Integer[] selldirectQuantities) {
+        this.selldirectQuantities = selldirectQuantities;
     }
 
-    public Double getSelldirectPriceP2() {
-        return selldirectPriceP2;
+    public int[] getSetuptimes() {
+        return setuptimes;
     }
 
-    public void setSelldirectPriceP2(Double selldirectPriceP2) {
-        this.selldirectPriceP2 = selldirectPriceP2;
+    public void setSetuptimes(int[] setuptimes) {
+        this.setuptimes = setuptimes;
     }
 
-    public Double getSelldirectPriceP3() {
-        return selldirectPriceP3;
+    public double getStockFactor() {
+        return stockFactor;
     }
 
-    public void setSelldirectPriceP3(Double selldirectPriceP3) {
-        this.selldirectPriceP3 = selldirectPriceP3;
+    public void setStockFactor(double stockFactor) {
+        this.stockFactor = stockFactor;
     }
-
-    public Integer getSelldirectQuantityP1() {
-        return selldirectQuantityP1;
-    }
-
-    public void setSelldirectQuantityP1(Integer selldirectQuantityP1) {
-        this.selldirectQuantityP1 = selldirectQuantityP1;
-    }
-
-    public Integer getSelldirectQuantityP2() {
-        return selldirectQuantityP2;
-    }
-
-    public void setSelldirectQuantityP2(Integer selldirectQuantityP2) {
-        this.selldirectQuantityP2 = selldirectQuantityP2;
-    }
-
-    public Integer getSelldirectQuantityP3() {
-        return selldirectQuantityP3;
-    }
-
-    public void setSelldirectQuantityP3(Integer selldirectQuantityP3) {
-        this.selldirectQuantityP3 = selldirectQuantityP3;
+    
+    private void init() {
+        for (int i = 0; i < salesOrders.length; i++) {
+            salesOrders[i] = Integer.valueOf(0);
+        }
+        for (int i = 0; i < forcasts.length; i++) {
+            forcasts[i][0] = Integer.valueOf(0);
+            forcasts[i][1] = Integer.valueOf(0);
+            forcasts[i][2] = Integer.valueOf(0);
+        }
+        for (int i = 0; i < selldirectPrices.length; i++) {
+            selldirectPrices[i] = Double.valueOf(0.0);
+        }
+        for (int i = 0; i < selldirectQuantities.length; i++) {
+            selldirectQuantities[i] = Integer.valueOf(0);
+        }
+        for (int i = 0; i < selldirectPrices.length; i++) {
+            selldirectPrices[i] = Double.valueOf(0.0);
+        }
+        for (int i = 0; i < selldirectPenalties.length; i++) {
+            selldirectPenalties[i] = Double.valueOf(0.0);
+        }
+        for (int i = 0; i < periodFactors.length; i++) {
+            periodFactors[i] = Double.valueOf(bundle.getString("factor.period." + (i+1)));
+        }
+        for (int i = 0; i < setuptimes.length; i++) {
+            if (i != 4) {
+                setuptimes[i] = Integer.valueOf(bundle.getString("setuptime." + (i+1)));
+            }
+        }
     }
 }

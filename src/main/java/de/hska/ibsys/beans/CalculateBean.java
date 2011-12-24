@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
  * @author p0004
  */
 // TODO: Keine Extraschichten oder Überstunden anordnen, wenn kein Material zur bearbeitung bereit stehen kann
-// TODO: Losgrößensplitting einfuehren
 public class CalculateBean {
     
     private ResultDTO resultDTO;
@@ -73,52 +72,30 @@ public class CalculateBean {
     
     private void setSellwishAndSelldirect() {
         // Set sellwishes for P1, P2, P3
-        Item itemP1 = new Item();
-        Item itemP2 = new Item();
-        Item itemP3 = new Item();
-        
-        itemP1.setArticle(BigInteger.valueOf(1));
-        itemP2.setArticle(BigInteger.valueOf(2));
-        itemP3.setArticle(BigInteger.valueOf(3));
-        
-        itemP1.setQuantity(BigInteger.valueOf(resultDTO.getSalesOrdersP1()));
-        itemP2.setQuantity(BigInteger.valueOf(resultDTO.getSalesOrdersP2()));
-        itemP3.setQuantity(BigInteger.valueOf(resultDTO.getSalesOrdersP3()));
-        
         Sellwish sellwish = new Sellwish();
-        sellwish.getItem().add(itemP1);
-        sellwish.getItem().add(itemP2);
-        sellwish.getItem().add(itemP3);
+        for (int i = 0; i < resultDTO.getSalesOrders().length; i++) {
+            Item item = new Item();
+            
+            item.setArticle(BigInteger.valueOf(i+1));
+            item.setQuantity(BigInteger.valueOf(resultDTO.getSalesOrders()[i]));
+            
+            sellwish.getItem().add(item);
+        }
         
         input.setSellwish(sellwish);
         
         // Set selldirects for P1, P2, P3
-        Item itemSelldirectP1 = new Item();
-        Item itemSelldirectP2 = new Item();
-        Item itemSelldirectP3 = new Item();
-        
-        itemSelldirectP1.setArticle(BigInteger.valueOf(1));
-        itemSelldirectP1.setQuantity(BigInteger.valueOf(resultDTO.getSelldirectQuantityP1()));
-        itemSelldirectP1.setPrice(BigDecimal.valueOf(resultDTO.getSelldirectPriceP1()));
-        itemSelldirectP1.setPenalty(BigDecimal.valueOf(resultDTO.getSelldirectPenaltyP1()));
-        resultDTO.setSalesOrdersP1(resultDTO.getSalesOrdersP1() + resultDTO.getSelldirectQuantityP1());
-        
-        itemSelldirectP2.setArticle(BigInteger.valueOf(2));
-        itemSelldirectP2.setQuantity(BigInteger.valueOf(resultDTO.getSelldirectQuantityP2()));
-        itemSelldirectP2.setPrice(BigDecimal.valueOf(resultDTO.getSelldirectPriceP2()));
-        itemSelldirectP2.setPenalty(BigDecimal.valueOf(resultDTO.getSelldirectPenaltyP2()));
-        resultDTO.setSalesOrdersP2(resultDTO.getSalesOrdersP2() + resultDTO.getSelldirectQuantityP2());
-        
-        itemSelldirectP3.setArticle(BigInteger.valueOf(3));
-        itemSelldirectP3.setQuantity(BigInteger.valueOf(resultDTO.getSelldirectQuantityP3()));
-        itemSelldirectP3.setPrice(BigDecimal.valueOf(resultDTO.getSelldirectPriceP3()));
-        itemSelldirectP3.setPenalty(BigDecimal.valueOf(resultDTO.getSelldirectPenaltyP3()));
-        resultDTO.setSalesOrdersP3(resultDTO.getSalesOrdersP3() + resultDTO.getSelldirectQuantityP3());
-        
         Selldirect selldirect = new Selldirect();
-        selldirect.getItem().add(itemSelldirectP1);
-        selldirect.getItem().add(itemSelldirectP2);
-        selldirect.getItem().add(itemSelldirectP3);
+        for (int i = 0; i < resultDTO.getSelldirectQuantities().length; i++) {
+            Item itemSelldirect = new Item();
+            
+            itemSelldirect.setArticle(BigInteger.valueOf(i+1));
+            itemSelldirect.setQuantity(BigInteger.valueOf(resultDTO.getSelldirectQuantities()[i]));
+            itemSelldirect.setPrice(BigDecimal.valueOf(resultDTO.getSelldirectPrices()[i]));
+            itemSelldirect.setPenalty(BigDecimal.valueOf(resultDTO.getSelldirectPenalties()[i]));
+            
+            selldirect.getItem().add(itemSelldirect);
+        }
         
         input.setSelldirect(selldirect);
     }
@@ -160,10 +137,10 @@ public class CalculateBean {
         orderInfoList.add(new double[]{59,0.7,0.2,2,2,2,1800});
         
         for (double[] orderInfo : orderInfoList) {
-            int period0 = (int)orderInfo[3] * resultDTO.getSalesOrdersP1() + (int)orderInfo[4] * resultDTO.getSalesOrdersP2() + (int)orderInfo[5] * resultDTO.getSalesOrdersP3();
-            int period1 = (int)orderInfo[3] * resultDTO.getForcastP1f1() + (int)orderInfo[4] * resultDTO.getForcastP2f1() + (int)orderInfo[5] * resultDTO.getForcastP3f1();
-            int period2 = (int)orderInfo[3] * resultDTO.getForcastP1f2() + (int)orderInfo[4] * resultDTO.getForcastP2f2() + (int)orderInfo[5] * resultDTO.getForcastP3f2();
-            int period3 = (int)orderInfo[3] * resultDTO.getForcastP1f3() + (int)orderInfo[4] * resultDTO.getForcastP2f3() + (int)orderInfo[5] * resultDTO.getForcastP3f3();
+            int period0 = (int)orderInfo[3] * resultDTO.getSalesOrders()[0] + (int)orderInfo[4] * resultDTO.getSalesOrders()[1] + (int)orderInfo[5] * resultDTO.getSalesOrders()[2];
+            int period1 = (int)orderInfo[3] * resultDTO.getForcasts()[0][0] + (int)orderInfo[4] * resultDTO.getForcasts()[1][0] + (int)orderInfo[5] * resultDTO.getForcasts()[2][0];
+            int period2 = (int)orderInfo[3] * resultDTO.getForcasts()[0][1] + (int)orderInfo[4] * resultDTO.getForcasts()[1][1] + (int)orderInfo[5] * resultDTO.getForcasts()[2][1];
+            int period3 = (int)orderInfo[3] * resultDTO.getForcasts()[0][2] + (int)orderInfo[4] * resultDTO.getForcasts()[1][2] + (int)orderInfo[5] * resultDTO.getForcasts()[2][2];
             
             int warehousestock = resultDTO.getResult().getWarehousestock().getArticle().get((int)orderInfo[0]-1).getAmount().intValue();
             int futureinwardstockmovement = 0;
@@ -234,15 +211,15 @@ public class CalculateBean {
         // Calculate P1, P2, P3 waitingorders and next production orders for placement and further operations
         int[][] P1_P2_P3 = new int[3][2];
         int[] waitingOrdersP1 = calculateWaitingOrders(1);
-        int nextProdOrdersP1 = planNextProductionOrders(resultDTO.getSalesOrdersP1(),new int[]{0,0}, plannedStock[0], 1, waitingOrdersP1);
+        int nextProdOrdersP1 = planNextProductionOrders(resultDTO.getSalesOrders()[0],new int[]{0,0}, plannedStock[0], 1, waitingOrdersP1);
         P1_P2_P3[0][0] = 1;
         P1_P2_P3[0][1] = nextProdOrdersP1;
         int[] waitingOrdersP2 = calculateWaitingOrders(2);
-        int nextProdOrdersP2 = planNextProductionOrders(resultDTO.getSalesOrdersP2(),new int[]{0,0}, plannedStock[1], 2, waitingOrdersP2);
+        int nextProdOrdersP2 = planNextProductionOrders(resultDTO.getSalesOrders()[1],new int[]{0,0}, plannedStock[1], 2, waitingOrdersP2);
         P1_P2_P3[1][0] = 2;
         P1_P2_P3[1][1] = nextProdOrdersP2;        
         int[] waitingOrdersP3 = calculateWaitingOrders(3);
-        int nextProdOrdersP3 = planNextProductionOrders(resultDTO.getSalesOrdersP3(),new int[]{0,0}, plannedStock[2], 3, waitingOrdersP3);
+        int nextProdOrdersP3 = planNextProductionOrders(resultDTO.getSalesOrders()[2],new int[]{0,0}, plannedStock[2], 3, waitingOrdersP3);
         P1_P2_P3[2][0] = 3;
         P1_P2_P3[2][1] = nextProdOrdersP3;
         
@@ -495,23 +472,18 @@ public class CalculateBean {
      * Plans the stock for P1, P2 and P3 at the and of the next period
      */
     private int[] planPStock() {
-        double[] plandPStockTemp = new double[3];
-        double factorPeriod1 = Double.valueOf(bundle.getString("factor.period1"));
-        double factorPeriod2 = Double.valueOf(bundle.getString("factor.period2"));
-        double factorPeriod3 = Double.valueOf(bundle.getString("factor.period3"));
         double factorStock = Double.valueOf(bundle.getString("factor.stock"));
+        double[] factorPeriod = new double[3];
+        for (int i = 0; i < factorPeriod.length; i++) {
+            factorPeriod[i] = Double.valueOf(bundle.getString("factor.period." + (i+1)));
+        }
         
-        plandPStockTemp[0] = (resultDTO.getForcastP1f1() * factorPeriod1 + resultDTO.getForcastP1f2() * factorPeriod2 + resultDTO.getForcastP1f3() * factorPeriod3) 
-                / (factorPeriod1 + factorPeriod2 + factorPeriod3) 
-                * factorStock;
-       
-        plandPStockTemp[1] = (resultDTO.getForcastP2f1() * factorPeriod1 + resultDTO.getForcastP2f2() * factorPeriod2 + resultDTO.getForcastP2f3() * factorPeriod3) 
-                / (factorPeriod1 + factorPeriod2 + factorPeriod3) 
-                * factorStock;
-        
-        plandPStockTemp[2] = (resultDTO.getForcastP3f1() * factorPeriod1 + resultDTO.getForcastP3f2() * factorPeriod2 + resultDTO.getForcastP3f3() * factorPeriod3) 
-                / (factorPeriod1 + factorPeriod2 + factorPeriod3) 
-                * factorStock;
+        double[] plandPStockTemp = new double[3];
+        for (int i = 0; i < resultDTO.getForcasts().length; i++) {
+            plandPStockTemp[i] = (resultDTO.getForcasts()[i][0] * factorPeriod[0] + resultDTO.getForcasts()[i][1] * factorPeriod[1] + resultDTO.getForcasts()[i][2] * factorPeriod[2]) 
+                    / (factorPeriod[0] + factorPeriod[1] + factorPeriod[2]) 
+                    * factorStock;
+        }
         
         int[] plandPStock = new int[3];
         for (int i = 0; i < plandPStockTemp.length; i++) {
@@ -607,28 +579,14 @@ public class CalculateBean {
     private void addBlockProductions(Productionlist productionlist, int[][] nextProdOrders, int[][] priority) {
         int[][] splitOrders = split(nextProdOrders);
         
-        if (priority[0][0] == 1) {
-            addProduction(splitOrders[0][0], splitOrders[0][1], productionlist);
-        } else if (priority[0][0] == 2) {
-            addProduction(splitOrders[1][0], splitOrders[1][1], productionlist);
-        } else if (priority[0][0] == 3) {
-            addProduction(splitOrders[2][0], splitOrders[2][1], productionlist);
-        }
-        
-        if (priority[1][0] == 1) {
-            addProduction(splitOrders[0][0], splitOrders[0][1], productionlist);
-        } else if (priority[1][0] == 2) {
-            addProduction(splitOrders[1][0], splitOrders[1][1], productionlist);
-        } else if (priority[1][0] == 3) {
-            addProduction(splitOrders[2][0], splitOrders[2][1], productionlist);
-        }
-                
-        if (priority[2][0] == 1) {
-            addProduction(splitOrders[0][0], splitOrders[0][1], productionlist);
-        } else if (priority[2][0] == 2) {
-            addProduction(splitOrders[1][0], splitOrders[1][1], productionlist);
-        } else if (priority[2][0] == 3) {
-            addProduction(splitOrders[2][0], splitOrders[2][1], productionlist);
+        for (int i = 0; i < splitOrders.length; i++) {
+            if (priority[i][0] == 1) {
+                addProduction(splitOrders[0][0], splitOrders[0][1], productionlist);
+            } else if (priority[i][0] == 2) {
+                addProduction(splitOrders[1][0], splitOrders[1][1], productionlist);
+            } else if (priority[i][0] == 3) {
+                addProduction(splitOrders[2][0], splitOrders[2][1], productionlist);
+            }
         }
     }
     
