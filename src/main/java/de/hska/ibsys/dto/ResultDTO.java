@@ -21,9 +21,10 @@ public class ResultDTO {
     private Integer[] selldirectQuantities = new Integer[3];
     private Double[] selldirectPrices = new Double[3];
     private Double[] selldirectPenalties = new Double[3];
-    private double stockFactor = Double.valueOf(bundle.getString("factor.stock"));
-    private double[] periodFactors = new double[3];
-    private int[] setuptimes = new int[14];
+    private Double productionFactor = Double.valueOf(bundle.getString("factor.period.production"));
+    private Double[] periodFactors = new Double[3];
+    private Integer[] setupEvents = new Integer[14];
+    private Integer splitValue = Integer.valueOf(bundle.getString("split"));
     
     public ResultDTO() {
         this.init();
@@ -50,11 +51,11 @@ public class ResultDTO {
         this.forcasts = forcasts;
     }
 
-    public double[] getPeriodFactors() {
+    public Double[] getPeriodFactors() {
         return periodFactors;
     }
 
-    public void setPeriodFactors(double[] periodFactors) {
+    public void setPeriodFactors(Double[] periodFactors) {
         this.periodFactors = periodFactors;
     }
 
@@ -98,21 +99,30 @@ public class ResultDTO {
         this.selldirectQuantities = selldirectQuantities;
     }
 
-    public int[] getSetuptimes() {
-        return setuptimes;
+    public Integer[] getSetupEvents() {
+        return setupEvents;
     }
 
-    public void setSetuptimes(int[] setuptimes) {
-        this.setuptimes = setuptimes;
+    public void setSetupEvents(Integer[] setupEvents) {
+        this.setupEvents = setupEvents;
     }
 
-    public double getStockFactor() {
-        return stockFactor;
+    public Double getProductionFactor() {
+        return productionFactor;
     }
 
-    public void setStockFactor(double stockFactor) {
-        this.stockFactor = stockFactor;
+    public void setProductionFactor(Double productionFactor) {
+        this.productionFactor = productionFactor;
     }
+    
+    public Integer getSplitValue() {
+        return splitValue;
+    }
+
+    public void setSplitValue(Integer splitValue) {
+        this.splitValue = splitValue;
+    }
+    
     
     private void init() {
         for (int i = 0; i < salesOrders.length; i++) {
@@ -138,9 +148,11 @@ public class ResultDTO {
         for (int i = 0; i < periodFactors.length; i++) {
             periodFactors[i] = Double.valueOf(bundle.getString("factor.period." + (i+1)));
         }
-        for (int i = 0; i < setuptimes.length; i++) {
-            if (i != 4) {
-                setuptimes[i] = Integer.valueOf(bundle.getString("setuptime." + (i+1)));
+        for (int i = 0; i < setupEvents.length; i++) {
+            if (i < 4) {
+                setupEvents[i] = Integer.valueOf(bundle.getString("setupevents." + (i+1)));
+            } else {
+                setupEvents[i] = Integer.valueOf(bundle.getString("setupevents." + (i+2)));
             }
         }
     }

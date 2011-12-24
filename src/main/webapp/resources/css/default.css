@@ -36,3 +36,14 @@ li {
 input[type=text] {
     width:80px
 }
+
+table {
+    margin-top: 40px;
+    width: 100%
+}
+table th {
+    background: #E0E0E0
+}
+table tr {
+    background: #F0F0F0;
+}

@@ -3,12 +3,10 @@ package de.hska.ibsys.beans;
 import de.hska.ibsys.dto.InputDTO;
 import de.hska.ibsys.dto.ResultDTO;
 import de.hska.ibsys.input.*;
-import de.hska.ibsys.util.Constant;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  *
@@ -21,7 +19,6 @@ public class CalculateBean {
     private InputDTO inputDTO;
     private Input input = new Input();
     private boolean next = true;
-    private ResourceBundle bundle = ResourceBundle.getBundle(Constant.CALCULATE_RESOURCE);
     
     /**
      * Constructor gets information from resultDTO parameter and calls all necessary methods
@@ -422,6 +419,7 @@ public class CalculateBean {
         workstationInfo.add(new int[]{14,0,16,3});
         workstationInfo.add(new int[]{15,15,17,3,26,3});
         
+        int idx = 0;
         for (int[] workstation : workstationInfo) {
             Workingtime workingtime = new Workingtime();
             
@@ -437,7 +435,7 @@ public class CalculateBean {
             
             // Setup time and setup events
             int setupTime =workstation[1];
-            int setupEvents = Integer.valueOf(bundle.getString("setuptime." + workstation[0]));
+            int setupEvents = resultDTO.getSetupEvents()[idx];
             
             int total = machineTime + setupTime + setupEvents;
             
@@ -461,6 +459,7 @@ public class CalculateBean {
             workingtime.setStation(BigInteger.valueOf((int)workstation[0]));
             workingtimelist.getWorkingtime().add(workingtime);
             input.setWorkingtimelist(workingtimelist);
+            idx++;
         }
     }
       
@@ -472,10 +471,10 @@ public class CalculateBean {
      * Plans the stock for P1, P2 and P3 at the and of the next period
      */
     private int[] planPStock() {
-        double factorStock = Double.valueOf(bundle.getString("factor.stock"));
-        double[] factorPeriod = new double[3];
-        for (int i = 0; i < factorPeriod.length; i++) {
-            factorPeriod[i] = Double.valueOf(bundle.getString("factor.period." + (i+1)));
+        double factorStock = resultDTO.getProductionFactor();
+        double[] factorPeriod = new double[resultDTO.getPeriodFactors().length];
+        for (int i = 0; i < resultDTO.getPeriodFactors().length; i++) {
+            factorPeriod[i] = resultDTO.getPeriodFactors()[0];
         }
         
         double[] plandPStockTemp = new double[3];
@@ -597,7 +596,7 @@ public class CalculateBean {
      * @return splitted productionOrders
      */
     private int[][] split(int[][] nextProdOrders) {
-        int splitValue = Integer.valueOf(bundle.getString("split"));
+        int splitValue = resultDTO.getSplitValue();
         int[][] splitOrders = new int[3][2];
         
         for (int i = 0; i < nextProdOrders.length; i++) {
