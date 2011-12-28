@@ -1,8 +1,5 @@
-package de.hska.ibsys.beans;
+package de.hska.ibsys.util;
 
-import de.hska.ibsys.dto.ResultDTO;
-import de.hska.ibsys.result.Results;
-import de.hska.ibsys.util.Constant;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -17,7 +14,7 @@ import javax.xml.bind.Unmarshaller;
  *
  * @author p0004
  */
-public class XMLBean {
+public class XMLUtil {
     
     /**
      * Marshals an Object to XML
@@ -34,28 +31,28 @@ public class XMLBean {
             m.marshal( object, stringWriter );
             return stringWriter;
         } catch (JAXBException ex) {
-            Logger.getLogger(XMLBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XMLUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
     /**
-     * Unmarshals the (XML)byteArray to an ResultDTO-Object
+     * Unmarshals the (XML)byteArray to an Object
      * 
      * @param byteArray
-     * @return Filled ResultDTO-Object with period information
+     * @return Filled Object with period information
      */
-    public static ResultDTO unmarshal(byte[] byteArray) {
-        ResultDTO resultDTO = new ResultDTO();
+    public static Object unmarshal(byte[] byteArray, Class clazz) {
+        Object object;
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
             JAXBContext context = JAXBContext.newInstance(Constant.JAXB_RESULT);
             Unmarshaller um = context.createUnmarshaller();
-            resultDTO.setResult((Results)um.unmarshal( new InputStreamReader(bais) ));
+            object = clazz.cast(um.unmarshal(new InputStreamReader(bais)));
         } catch (JAXBException ex) {
-            Logger.getLogger(XMLBean.class.getName()).log(Level.SEVERE, null, ex);
-            resultDTO = null;
+            Logger.getLogger(XMLUtil.class.getName()).log(Level.SEVERE, null, ex);
+            object = null;
         }
-        return resultDTO;
+        return object;
     }
 }

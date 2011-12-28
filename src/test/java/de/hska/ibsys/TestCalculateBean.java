@@ -1,9 +1,10 @@
 package de.hska.ibsys;
 
 import de.hska.ibsys.beans.CalculateBean;
-import de.hska.ibsys.beans.XMLBean;
 import de.hska.ibsys.dto.InputDTO;
 import de.hska.ibsys.dto.ResultDTO;
+import de.hska.ibsys.result.Results;
+import de.hska.ibsys.util.XMLUtil;
 import java.io.*;
 import org.custommonkey.xmlunit.Validator;
 import org.junit.After;
@@ -18,9 +19,9 @@ import org.xml.sax.SAXException;
  */
 public class TestCalculateBean {
     
-    private static CalculateBean calculateBean;
-    private static InputDTO inputDTO;
-    private static ResultDTO resultDTO;
+    private CalculateBean calculateBean;
+    private InputDTO inputDTO;
+    private ResultDTO resultDTO;
     
     @Before
     public void setUp() throws FileNotFoundException, IOException {
@@ -35,7 +36,7 @@ public class TestCalculateBean {
         FileInputStream fileInputStream = new FileInputStream(file);
         byte fileContent[] = new byte[(int)file.length()];
         fileInputStream.read(fileContent);
-        resultDTO = (ResultDTO)XMLBean.unmarshal(fileContent);
+        resultDTO.setResult((Results)XMLUtil.unmarshal(fileContent, Results.class));
     }
     
     @After
@@ -65,7 +66,7 @@ public class TestCalculateBean {
         
         // Get the calculated information to generate XML
         inputDTO = calculateBean.getInputDTO();
-        StringWriter stringWriter = XMLBean.marshal(inputDTO.getInput());
+        StringWriter stringWriter = XMLUtil.marshal(inputDTO.getInput());
         
         // Validate the XML
         Validator validator = new Validator(stringWriter.getBuffer().toString());

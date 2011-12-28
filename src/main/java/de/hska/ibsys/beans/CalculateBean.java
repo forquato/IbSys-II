@@ -12,7 +12,6 @@ import java.util.List;
  *
  * @author p0004
  */
-// TODO: Keine Extraschichten oder Überstunden anordnen, wenn kein Material zur bearbeitung bereit stehen kann
 public class CalculateBean {
     
     private ResultDTO resultDTO;
@@ -37,19 +36,11 @@ public class CalculateBean {
         inputDTO = new InputDTO();
         inputDTO.setInput(input);
     }
-
-    /**
-     * 
-     * @return
-     */
+    
     public ResultDTO getResultDTO() {
         return resultDTO;
     }
     
-    /**
-     * 
-     * @return
-     */
     public InputDTO getInputDTO() {        
         return inputDTO;
     }

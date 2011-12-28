@@ -19,6 +19,9 @@ public class ChartBean {
     private InputDTO inputDTO;
     
     ResourceBundle bundle = ResourceBundle.getBundle(Constant.LOCALE_RESOURCES, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+    public ChartBean() {
+    }
     
     public ChartBean(InputDTO inputDTO) {
         this.inputDTO = inputDTO;

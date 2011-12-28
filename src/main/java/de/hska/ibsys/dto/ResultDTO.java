@@ -14,7 +14,6 @@ public class ResultDTO {
      *       Please run maven if it does not exist.
      */
     private Results result;
-    
     private ResourceBundle bundle = ResourceBundle.getBundle(Constant.CALCULATE_RESOURCE);
     private Integer[] salesOrders = new Integer[3];
     private Integer[][] forcasts = new Integer[3][3];
@@ -26,91 +25,92 @@ public class ResultDTO {
     private Integer[] setupEvents = new Integer[14];
     private Integer splitValue = Integer.valueOf(bundle.getString("split"));
     
+    
     public ResultDTO() {
         this.init();
     }
-
+    
     public ResultDTO(Results result) {
         this.result = result;
         this.init();
     }
-
+    
     public ResourceBundle getBundle() {
         return bundle;
     }
-
+    
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
     }
-
+    
     public Integer[][] getForcasts() {
         return forcasts;
     }
-
+    
     public void setForcasts(Integer[][] forcasts) {
         this.forcasts = forcasts;
     }
-
+    
     public Double[] getPeriodFactors() {
         return periodFactors;
     }
-
+    
     public void setPeriodFactors(Double[] periodFactors) {
         this.periodFactors = periodFactors;
     }
-
+    
     public Results getResult() {
         return result;
     }
-
+    
     public void setResult(Results result) {
         this.result = result;
     }
-
+    
     public Integer[] getSalesOrders() {
         return salesOrders;
     }
-
+    
     public void setSalesOrders(Integer[] salesOrders) {
         this.salesOrders = salesOrders;
     }
-
+    
     public Double[] getSelldirectPenalties() {
         return selldirectPenalties;
     }
-
+    
     public void setSelldirectPenalties(Double[] selldirectPenalties) {
         this.selldirectPenalties = selldirectPenalties;
     }
-
+    
     public Double[] getSelldirectPrices() {
         return selldirectPrices;
     }
-
+    
     public void setSelldirectPrices(Double[] selldirectPrices) {
         this.selldirectPrices = selldirectPrices;
     }
-
+    
     public Integer[] getSelldirectQuantities() {
         return selldirectQuantities;
     }
-
+    
     public void setSelldirectQuantities(Integer[] selldirectQuantities) {
         this.selldirectQuantities = selldirectQuantities;
     }
-
+    
     public Integer[] getSetupEvents() {
         return setupEvents;
     }
-
+    
     public void setSetupEvents(Integer[] setupEvents) {
         this.setupEvents = setupEvents;
     }
-
+    
     public Double getProductionFactor() {
         return productionFactor;
     }
-
+    
     public void setProductionFactor(Double productionFactor) {
         this.productionFactor = productionFactor;
     }
@@ -118,11 +118,10 @@ public class ResultDTO {
     public Integer getSplitValue() {
         return splitValue;
     }
-
+    
     public void setSplitValue(Integer splitValue) {
         this.splitValue = splitValue;
     }
-    
     
     private void init() {
         for (int i = 0; i < salesOrders.length; i++) {

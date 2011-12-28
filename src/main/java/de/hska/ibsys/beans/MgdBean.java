@@ -2,7 +2,9 @@ package de.hska.ibsys.beans;
 
 import de.hska.ibsys.dto.InputDTO;
 import de.hska.ibsys.dto.ResultDTO;
+import de.hska.ibsys.result.Results;
 import de.hska.ibsys.util.Constant;
+import de.hska.ibsys.util.XMLUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -28,50 +30,30 @@ public class MgdBean implements Serializable {
     private ResultDTO resultDTO;
     private UploadedFile uploadedFile;
 
-    /**
-     * 
-     * @return
-     */
+    public MgdBean() {
+    }
+
+    
     public InputDTO getInputDTO() {
         return inputDTO;
     }
-
-    /**
-     * 
-     * @param inputDTO
-     */
+    
     public void setInputDTO(InputDTO inputDTO) {
         this.inputDTO = inputDTO;
     }
-
-    /**
-     * 
-     * @return
-     */
+    
     public ResultDTO getResultDTO() {
         return resultDTO;
     }
-
-    /**
-     * 
-     * @param resultDTO
-     */
+    
     public void setResultDTO(ResultDTO resultDTO) {
         this.resultDTO = resultDTO;
     }
     
-    /**
-     * 
-     * @return
-     */
     public UploadedFile getUploadedFile() {
         return uploadedFile;
     }
-
-    /**
-     * 
-     * @param uploadedFile
-     */
+    
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
@@ -104,9 +86,10 @@ public class MgdBean implements Serializable {
         if (uploadedFile != null) {
             // Unmarshal the XML-File
             byte[] bytes = uploadedFile.getBytes();
-            resultDTO = (ResultDTO)XMLBean.unmarshal(bytes);
+            resultDTO = new ResultDTO();
+            resultDTO.setResult((Results)XMLUtil.unmarshal(bytes, Results.class));
         }
-        if (resultDTO != null) {
+        if (resultDTO.getResult() != null) {
             // Redirect the user to the forecast page
             FacesContext.getCurrentInstance().getExternalContext().redirect(Constant.PAGE_FORECAST);
         } else {
@@ -116,7 +99,7 @@ public class MgdBean implements Serializable {
                 ResourceBundle bundle = ResourceBundle.getBundle(Constant.LOCALE_RESOURCES, FacesContext.getCurrentInstance().getViewRoot().getLocale());
                 text = bundle.getString(Constant.MESSAGE_UPLOAD_ERROR);
             } catch (Exception ex) {
-                Logger.getLogger(XMLBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(XMLUtil.class.getName()).log(Level.SEVERE, null, ex);
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(text));
         }
@@ -148,13 +131,13 @@ public class MgdBean implements Serializable {
         response.setContentType("application/xml");
         response.addHeader("Content-Disposition", "attachment; filename=\"" + Constant.INPUT_XML_FILE_NAME + "\"");
         try {
-            StringWriter stringWriter = XMLBean.marshal(inputDTO.getInput());
+            StringWriter stringWriter = XMLUtil.marshal(inputDTO.getInput());
             response.getOutputStream().write(stringWriter.toString().getBytes());
             response.getOutputStream().flush();
             response.getOutputStream().close();
             fc.responseComplete();
         } catch(Exception ex) {
-            Logger.getLogger(XMLBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XMLUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
