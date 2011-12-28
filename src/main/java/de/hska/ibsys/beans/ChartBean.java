@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.hska.ibsys.beans;
 
 import de.hska.ibsys.dto.InputDTO;
@@ -9,7 +5,6 @@ import de.hska.ibsys.input.Order;
 import de.hska.ibsys.input.Production;
 import de.hska.ibsys.input.Workingtime;
 import de.hska.ibsys.util.Constant;
-import java.math.BigInteger;
 import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.chart.CartesianChartModel;

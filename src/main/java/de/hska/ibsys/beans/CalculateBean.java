@@ -576,7 +576,12 @@ public class CalculateBean {
      * @param priority 
      */
     private void addBlockProductions(Productionlist productionlist, int[][] nextProdOrders, int[][] priority) {
-        int[][] splitOrders = split(nextProdOrders);
+        int[][] splitOrders;
+        if (resultDTO.getSplitValue() != 0) {
+            splitOrders = split(nextProdOrders);
+        } else {
+            splitOrders = nextProdOrders;
+        }
         
         for (int i = 0; i < splitOrders.length; i++) {
             if (priority[i][0] == 1) {

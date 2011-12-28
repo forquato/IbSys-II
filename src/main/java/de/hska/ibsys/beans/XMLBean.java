@@ -1,6 +1,5 @@
 package de.hska.ibsys.beans;
 
-
 import de.hska.ibsys.dto.ResultDTO;
 import de.hska.ibsys.result.Results;
 import de.hska.ibsys.util.Constant;

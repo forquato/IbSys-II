@@ -199,7 +199,7 @@
                                 </td>
                                 <td>
                                     <h:inputText id="split_value" value="#{mgdBean.resultDTO.splitValue}" onclick="this.select();this.focus()">
-                                        <f:validateLongRange minimum="1" maximum="999"/>
+                                        <f:validateLongRange minimum="0" maximum="999"/>
                                         <f:validateRequired/>
                                     </h:inputText>
                                 </td>
@@ -238,7 +238,7 @@
                                 </td>
                             </tr>
                         </table>
-                            
+                        
                         <h:button image="./resources/img/prev_48.png" outcome="upload" style="margin: 15px 5px 0px 0px"/>
                         <h:commandButton action="#{mgdBean.submitForcasts}" image="./resources/img/next_48.png" style="margin: 15px 0px 0px 5px"/>
                     </h:form>
