@@ -2,7 +2,7 @@ package de.hska.ibsys.util;
 
 /**
  * 
- * @author dennis
+ * @author p0004
  */
 public interface Constant {
     // JSF

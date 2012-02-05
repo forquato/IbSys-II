@@ -354,7 +354,7 @@ public class CalculateBean {
         int nextProdOrdersE20 = planNextProductionOrders(nextProdOrdersE30, waitingOrdersE29, plannedStock[2], 29, waitingOrdersE20);
         E9_E15_E20[2][0] = 20;
         E9_E15_E20[2][1] = nextProdOrdersE20;
-                
+        
         // Plan priority of P1, P2 and P3
         int[][] priority = new int[][]{{1,(int)nextProdOrdersP1},{2,(int)nextProdOrdersP2},{3,(int)nextProdOrdersP3}};
         sort(priority);
