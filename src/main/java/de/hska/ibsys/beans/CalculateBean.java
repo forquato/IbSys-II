@@ -139,7 +139,7 @@ public class CalculateBean {
             if (period0 >= (warehousestock + futureinwardstockmovement)) {
                 order.setArticle(BigInteger.valueOf(((int)orderInfo[0])));
                 if ((warehousestock + futureinwardstockmovement + orderInfo[6]) <= period0) {
-                    order.setQuantity(BigInteger.valueOf(((int)orderInfo[6] + period0)));
+                    order.setQuantity(BigInteger.valueOf((period0)));
                 } else {
                     order.setQuantity(BigInteger.valueOf(((int)orderInfo[6])));
                 }
@@ -148,11 +148,11 @@ public class CalculateBean {
             } else if (((period0 + period1) >= (warehousestock + futureinwardstockmovement)) && ((orderInfo[1] + orderInfo[2]) >= 1.0)) {
                 order.setArticle(BigInteger.valueOf(((int)orderInfo[0])));
                 if ((warehousestock + futureinwardstockmovement + orderInfo[6]) <= (period0 + period1)) {
-                    order.setQuantity(BigInteger.valueOf(((int)orderInfo[6] + period0 + period1)));
+                    order.setQuantity(BigInteger.valueOf((period0 + period1 - warehousestock - futureinwardstockmovement - (int)orderInfo[6])));
                 } else {
                     order.setQuantity(BigInteger.valueOf(((int)orderInfo[6])));
                 }
-                if ((orderInfo[1] + orderInfo[2]) >= 2) {
+                if ((orderInfo[1] + orderInfo[2]) > 2) {
                     order.setModus(BigInteger.valueOf(4));
                 } else {
                     order.setModus(BigInteger.valueOf(5));
@@ -161,11 +161,11 @@ public class CalculateBean {
             } else if (((period0 + period1 + period2) >= (warehousestock + futureinwardstockmovement)) && ((orderInfo[1] + orderInfo[2]) >= 2.0)) {
                 order.setArticle(BigInteger.valueOf(((int)orderInfo[0])));
                 if ((warehousestock + futureinwardstockmovement + orderInfo[6]) <= (period0 + period1 + period2)) {
-                    order.setQuantity(BigInteger.valueOf(((int)orderInfo[6] + period0 + period1 + period2)));
+                    order.setQuantity(BigInteger.valueOf((period0 + period1 + period2 - warehousestock - futureinwardstockmovement - (int)orderInfo[6])));
                 } else {
                     order.setQuantity(BigInteger.valueOf(((int)orderInfo[6])));
                 }
-                if ((orderInfo[1] + orderInfo[2]) >= 3) {
+                if ((orderInfo[1] + orderInfo[2]) > 3) {
                     order.setModus(BigInteger.valueOf(4));
                 } else {
                     order.setModus(BigInteger.valueOf(5));
@@ -174,11 +174,11 @@ public class CalculateBean {
             } else if (((period0 + period1 + period2 + period3) >= (warehousestock + futureinwardstockmovement)) && ((orderInfo[1] + orderInfo[2]) >= 3.0)) {
                 order.setArticle(BigInteger.valueOf(((int)orderInfo[0])));
                 if ((warehousestock + futureinwardstockmovement + orderInfo[6]) <= (period0 + period1 + period2 + period3)) {
-                    order.setQuantity(BigInteger.valueOf(((int)orderInfo[6] + period0 + period1 + period2 + period3)));
+                    order.setQuantity(BigInteger.valueOf((period0 + period1 + period2 + period3 - warehousestock - futureinwardstockmovement - (int)orderInfo[6])));
                 } else {
                     order.setQuantity(BigInteger.valueOf(((int)orderInfo[6])));
                 }
-                if ((orderInfo[1] + orderInfo[2]) >= 4) {
+                if ((orderInfo[1] + orderInfo[2]) > 4) {
                     order.setModus(BigInteger.valueOf(4));
                 } else {
                     order.setModus(BigInteger.valueOf(5));
@@ -362,19 +362,8 @@ public class CalculateBean {
         // Split production orders
         while(next) {
             next = false;
-            for (int i = 0; i < priority.length; i++) {
-                if (priority[i][0] == 1) {
-                    addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
-                } else if (priority[i][0] == 2) {
-                    addBlockProductions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
-                } else if (priority[i][0] == 3) {
-                    addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
-                }
-            }
             addBlockProductions(productionlist, P1_P2_P3, priority);
-            addBlockProductions(productionlist, E51_E56_E31, priority);
             addBlockProductions(productionlist, E26_E16_E17, priority);
-            addBlockProductions(productionlist, E50_E55_E30, priority);
             for (int i = 0; i < priority.length; i++) {
                 if (priority[i][0] == 1) {
                     addBlockProductions(productionlist, E7_E13_E18, new int[][]{{1,1},{2,1},{3,1}});
@@ -384,6 +373,17 @@ public class CalculateBean {
                     addBlockProductions(productionlist, E9_E15_E20, new int[][]{{1,1},{2,1},{3,1}});
                 }
             }
+            for (int i = 0; i < priority.length; i++) {
+                if (priority[i][0] == 1) {
+                    addBlockProductions(productionlist, E4_E10_E49, new int[][]{{1,1},{2,1},{3,1}});
+                } else if (priority[i][0] == 2) {
+                    addBlockProductions(productionlist, E5_E11_E54, new int[][]{{1,1},{2,1},{3,1}});
+                } else if (priority[i][0] == 3) {
+                    addBlockProductions(productionlist, E6_E12_E29, new int[][]{{1,1},{2,1},{3,1}});
+                }
+            }
+            addBlockProductions(productionlist, E51_E56_E31, priority);
+            addBlockProductions(productionlist, E50_E55_E30, priority);
         }
         
         // Set the splitted production list
@@ -427,8 +427,8 @@ public class CalculateBean {
             // Setup time and setup events
             int setupTime =workstation[1];
             int setupEvents = resultDTO.getSetupEvents()[idx];
-            
-            int total = machineTime + setupTime + setupEvents;
+            //TODO: Ergebnis ueberpruefen
+            int total = machineTime + (setupTime * setupEvents);
             
             if (total <= 2400) {
                 workingtime.setShift(BigInteger.ONE);
